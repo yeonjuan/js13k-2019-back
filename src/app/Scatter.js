@@ -1,6 +1,5 @@
 import {SCATTER_COLOR} from "./constants";
-
-function getRandomArbitrary(min, max) { return Math.random() * (max - min) + min; }
+import {randomInRange} from "./Utils";
 
 class Scatter {
   constructor (particleNum, time = 30, color = SCATTER_COLOR, speed = 3, minR = 5, maxR = 10) {
@@ -10,10 +9,10 @@ class Scatter {
     this.particles = Array
       .from({length: particleNum},
       () => ({
-        radius: getRandomArbitrary(minR,maxR),
-        xSpeed: getRandomArbitrary(-speed, speed),
-        ySpeed: getRandomArbitrary(-speed, speed / 3),
-        time: getRandomArbitrary(20, this.time),
+        radius: randomInRange(minR,maxR),
+        xSpeed: randomInRange(-speed, speed),
+        ySpeed: randomInRange(-speed, speed / 3),
+        time: randomInRange(20, this.time),
         x: 0,
         y: 0,
       }));
