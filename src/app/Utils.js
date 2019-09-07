@@ -84,9 +84,9 @@ export function selectDom (id) {
 }
 
 /**
- *
- * @param rad
- * @returns {number}
+ * Convert radian to degree.
+ * @param rad {number} - radian.
+ * @returns {number} - degree.
  */
 export function toDeg (rad) {
   return rad * 180 / Math.PI;

@@ -1,4 +1,5 @@
 import {UP, DOWN, LEFT, RIGHT, STOP, ROTATE_TO_LEFT, ROTATE_TO_RIGHT} from './constants';
+import {toDeg} from "./Utils";
 import Vision from './Vision';
 import Bullet from "./Bullet";
 import Asset from "./asset";
@@ -57,7 +58,7 @@ class Enemy {
      const targetY = this.game.player.y + this.game.player.height / 2;
      const diffY = targetY - this.y;
      const diffX = targetX - this.x;
-     this.offset = Math.atan2(diffY, diffX) * 180 / Math.PI;
+     this.offset = toDeg(Math.atan2(diffY, diffX));
      this.game.player.attacked();
    }
    if (!this.isAttacking) {
