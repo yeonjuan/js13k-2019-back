@@ -83,12 +83,23 @@ export function selectDom (id) {
   return document.getElementById(id);
 }
 
+const PI = Math.PI;
+
 /**
  * Convert radian to degree.
  * @param rad {number} - radian.
  * @returns {number} - degree.
  */
 export function toDeg (rad) {
-  return rad * 180 / Math.PI;
+  return rad * 180 / PI;
+}
+
+/**
+ * Convert degree to radian
+ * @param deg {number} - degree.
+ * @returns {number} - radian.
+ */
+export function toRad (deg) {
+  return deg * PI / 180;
 }
 

@@ -1,8 +1,5 @@
 import {VISION_COLOR} from "./constants";
-
-function degToRad(deg) {
-  return deg * Math.PI / 180;
-}
+import {toRad} from "./Utils";
 
 function isInBounds (p, bounds, fudge = 1){
   let a = bounds[0].x;
@@ -97,7 +94,7 @@ class Vision {
     this.rayEnds.length = (this.angleDeg / this.gap) | 0;
 
     while (visionDeg < endDeg) {
-      const visionRad = degToRad(visionDeg);
+      const visionRad = toRad(visionDeg);
       const visionEndX = this.origin.x + Math.cos(visionRad) * this.radius;
       const visionEndY = this.origin.y + Math.sin(visionRad) * this.radius;
       const visionEnd = {x: visionEndX, y: visionEndY};

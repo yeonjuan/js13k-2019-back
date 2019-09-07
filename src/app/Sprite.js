@@ -1,4 +1,6 @@
 import Asset from './asset';
+import {toRad} from "./Utils";
+
 class Sprite {
   constructor (id, path, frameNum, x, y, width, height) {
     Asset.loadImage(id, path);
@@ -33,7 +35,7 @@ class Sprite {
   render (ctx) {
     ctx.save();
     ctx.translate(this.x + this.sw / 2, this.y + this.sh / 2);
-    ctx.rotate(this.angleDeg * Math.PI / 180);
+    ctx.rotate(toRad(this.angleDeg));
     const scaleH = this.isFlipHorizontal ? -1 : 1;
     const scaleV = this.isFlipVertical ? -1 : 1;
     ctx.scale(scaleH, scaleV);
