@@ -1,7 +1,9 @@
+import {SCATTER_COLOR} from "./constants";
+
 function getRandomArbitrary(min, max) { return Math.random() * (max - min) + min; }
 
 class Scatter {
-  constructor (particleNum, time = 30, color = 'black', speed = 3, minR = 5, maxR = 10) {
+  constructor (particleNum, time = 30, color = SCATTER_COLOR, speed = 3, minR = 5, maxR = 10) {
     this.time = time;
     this.color = color;
     this.alive = false;

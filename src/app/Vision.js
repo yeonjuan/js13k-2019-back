@@ -1,3 +1,5 @@
+import {VISION_COLOR} from "./constants";
+
 function degToRad(deg) {
   return deg * Math.PI / 180;
 }
@@ -110,7 +112,7 @@ class Vision {
   }
 
   render(ctx) {
-    ctx.fillStyle = 'rgba(255, 255, 255,0.2)';
+    ctx.fillStyle = VISION_COLOR;
     ctx.beginPath();
     ctx.moveTo(this.origin.x, this.origin.y);
     this.rayEnds.forEach(end => end && ctx.lineTo(end.x, end.y));

@@ -21,3 +21,9 @@ export const GAME_PLAYING = 1;
 export const GAME_STAGE_CLEAR = 2;
 export const GAME_OVER = 3;
 
+// For colors
+export const VISION_COLOR = 'rgba(255, 255, 255,0.2)';
+export const BULLET_COLOR = 'yellow';
+export const HP_COLOR = 'rgb(139,0,0)';
+export const BLOCK_COLOR = 'black';
+export const SCATTER_COLOR = 'black';

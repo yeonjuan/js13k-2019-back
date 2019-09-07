@@ -1,4 +1,5 @@
 import game from './Game';
+import {HP_COLOR} from "./constants";
 
 class Hud {
   constructor () {
@@ -8,7 +9,7 @@ class Hud {
   render (ctx) {
     ctx.save();
     ctx.beginPath();
-    ctx.fillStyle = 'rgb(139,0,0)';
+    ctx.fillStyle = HP_COLOR;
     ctx.rect(0, 0, game.player.hp , 5);
     ctx.fill();
     ctx.restore();

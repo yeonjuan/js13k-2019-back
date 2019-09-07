@@ -1,4 +1,5 @@
 import {randomInRange} from "./Utils";
+import {BULLET_COLOR} from "./constants";
 
 class Bullet {
   constructor () {
@@ -22,7 +23,7 @@ class Bullet {
   render (ctx) {
     if (this.liveTime > 0) {
       ctx.beginPath();
-      ctx.strokeStyle = 'yellow';
+      ctx.strokeStyle = BULLET_COLOR;
       for (let i = 0; i < 5; i++) {
         ctx.moveTo(this.originX, this.originY);
         ctx.lineTo(this.originX + randomInRange(-10, 10), this.originY +  randomInRange(-10, 10));
