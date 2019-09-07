@@ -63,7 +63,7 @@ class Game {
 
     this.map.load(stage.map);
     this.player.init(stage.player.x * BLOCK_SIZE, stage.player.y * BLOCK_SIZE);
-    this.enemies = stage.enemies.map(({x, y, cmd}) => new Enemy(x * 16, y * 16, this.map, cmd, this));
+    this.enemies = stage.enemies.map(({x, y, cmd}) => new Enemy(x * BLOCK_SIZE, y * BLOCK_SIZE, this.map, cmd, this));
     this.hud = new Hud();
 
     Asset.loadImage('enemyTop', '../assets/enemy_top.png');

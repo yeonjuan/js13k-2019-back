@@ -1,4 +1,4 @@
-import {UP, DOWN, LEFT, RIGHT, STOP, MAP_SIZE} from './constants';
+import {UP, DOWN, LEFT, RIGHT, STOP, MAP_SIZE, SCATTER_COLOR, BLOCK_SIZE} from './constants';
 import Sprite from "./Sprite";
 import Scatter from "./Scatter";
 class Player {
@@ -17,7 +17,7 @@ class Player {
    // this.hp = MAP_SIZE;
     this.sprite = new Sprite('player', '../assets/player.png', 3, x, y, 32, 32 * 3);
     this.scatter = new Scatter(30);
-    this.attackedScatter = new Scatter(10, 0.5, 'black', 5, 2, 4);
+    this.attackedScatter = new Scatter(10, 0.5, SCATTER_COLOR, 5, 2, 4);
 
 
     this._leftTop = {x: this.x, y: this.y};
