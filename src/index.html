@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <style>
+      body {
+        margin: 0;
+        background: #222;
+      }
+      body {
+        display: flex;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        align-items: center;
+        justify-content: center;
+        color: #eee;
+        background: #222;
+        font-family: sans-serif;
+      }
+      body.loading {
+        display: flex;
+      }
+      #canvas {
+         background: #333333;
+       }
+        #ready {
+            font-size: 30px;
+            position: absolute;
+            color: white;
+            text-align: center;
+        }
+        #over {
+            font-size: 30px;
+            position: absolute;
+            color: white;
+            text-align: center;
+        }
+        #clear {
+            font-size: 30px;
+            position: absolute;
+            color: white;
+            text-align: center;
+        }
+        p {
+            font-size: 15px;
+            font-weight: lighter;
+        }
+    </style>
+  </head>
+  <body class="loading">
+    <canvas id="canvas" width="600" height="600"></canvas>
+    <div id="ready">
+        <h1>Back Attacker</h1>
+        <p>press Enter to start...</p>
+    </div>
+    <div id="over" style="display: none">
+        <h1>Game Over...</h1>
+        <p>press Enter to restart...</p>
+    </div>
+    <div id="clear" style="display: none">
+        <h1>Stage Clear !!</h1>
+        <p>press Enter to next </p>
+    </div>
+  </body>
+</html>
