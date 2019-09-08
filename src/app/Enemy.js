@@ -34,18 +34,19 @@ class Enemy {
       this.scatter.update(time);
       return;
     }
+    const player = this.game.player;
    if (
-     this.x < this.game.player.x + this.game.player.width &&
-     this.x + this.width > this.game.player.x &&
-     this.y < this.game.player.y + this.game.player.height &&
-     this.y + this.height > this.game.player.y) {
+     this.x < player.x + player.width &&
+     this.x + this.width > player.x &&
+     this.y < player.y + player.height &&
+     this.y + this.height > player.y) {
      this.isAlive = false;
      this.scatter.generate(this.x, this.y);
    }
 
    this.vision.update(this.x + this.width / 2 + 2, this.y, this.offset);
-   let intersectionRange = this.vision.getIntersectionRange(this.game.player.edges);
-   if (intersectionRange && this.game.player.isAlive) {
+   let intersectionRange = this.vision.getIntersectionRange(player.edges);
+   if (intersectionRange && player.isAlive) {
       this.isAttacking = true;
       const targetX = (intersectionRange[0].x + intersectionRange[1].x) / 2;
       const targetY = (intersectionRange[0].y + intersectionRange[1].y) / 2;
@@ -54,12 +55,12 @@ class Enemy {
      this.isAttacking = false;
    }
    if (this.isAttacking) {
-     const targetX = this.game.player.x + this.game.player.width / 2;
-     const targetY = this.game.player.y + this.game.player.height / 2;
+     const targetX = player.x + player.width / 2;
+     const targetY = player.y + player.height / 2;
      const diffY = targetY - this.y;
      const diffX = targetX - this.x;
      this.offset = toDeg(Math.atan2(diffY, diffX));
-     this.game.player.attacked();
+     player.attacked();
    }
    if (!this.isAttacking) {
      this.doCmd(time);
