@@ -88,7 +88,7 @@ class Game {
   }
 
   renderReady (nms) {
-    this.ctx.clearRect(0,0, this.canvas.width, this.canvas.height);
+    this.ctx.clearRect(0,0, MAP_SIZE, MAP_SIZE);
     this.map.renderReady(this.ctx);
     this.player.render(this.ctx);
   }
@@ -100,13 +100,13 @@ class Game {
     this.nextms = nms;
 
     this.update(time);
-    this.ctx.clearRect(0,0, this.canvas.width, this.canvas.height);
+    this.ctx.clearRect(0,0, MAP_SIZE, MAP_SIZE);
     this.map.render(this.ctx);
     this.player.render(this.ctx);
     this.hud.render(this.ctx);
-    this.novCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.novCtx.clearRect(0, 0, MAP_SIZE, MAP_SIZE);
     this.novCtx.fillStyle = 'rgba(0,0,0,0.4)';
-    this.novCtx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    this.novCtx.fillRect(0, 0, MAP_SIZE, MAP_SIZE);
     this.enemies.forEach(enemy => enemy.draw(this.ctx, this.novCtx));
     this.ctx.save();
 
