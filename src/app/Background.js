@@ -1,5 +1,5 @@
 import {MAP_SIZE, BLOCK_SIZE} from "./constants";
-import {randomInRange, randomIntInRange, scaleMapData, createCanvas} from "./Utils";
+import {randomInRange, randomIntInRange, scaleMapData, createCanvas, createImage} from "./Utils";
 
 // virtual canvas for drawing background
 const mcvs = createCanvas(MAP_SIZE, MAP_SIZE);
@@ -144,7 +144,5 @@ export default function createMapImage (mapData) {
   }
 
   // return image
-  const img = new Image();
-  img.src = mapCanvas.toDataURL();
-  return img;
+  return createImage(mapCanvas.toDataURL());
 }

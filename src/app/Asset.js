@@ -1,3 +1,5 @@
+import {createImage} from "./Utils";
+
 const _imgs = {};
 
 /**
@@ -6,7 +8,7 @@ const _imgs = {};
  * @param {string} path - image file path
  */
 function loadImage (id, path) {
-  _imgs[id] || ((_imgs[id] = new Image()).src = path);
+  _imgs[id] || (_imgs[id] = createImage(path));
 }
 
 /**

@@ -103,3 +103,13 @@ export function toRad (deg) {
   return deg * PI / 180;
 }
 
+/**
+ * Create Image Object with src
+ * @param src {string}
+ * @returns {HTMLImageElement}
+ */
+export function createImage (src) {
+  const img = new Image();
+  img.src = src;
+  return img;
+}
