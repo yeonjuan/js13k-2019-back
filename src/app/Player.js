@@ -1,4 +1,4 @@
-import {UP, DOWN, LEFT, RIGHT, STOP, MAP_SIZE, SCATTER_COLOR, BLOCK_SIZE, PLAYER_SPRITE} from './constants';
+import {UP, DOWN, LEFT, RIGHT, STOP, MAP_SIZE, SCATTER_COLOR, PLAYER_SPRITE} from './constants';
 import Sprite from "./Sprite";
 import Scatter from "./Scatter";
 

@@ -41,7 +41,6 @@ class Sprite {
     const scaleH = this.isFlipHorizontal ? -1 : 1;
     const scaleV = this.isFlipVertical ? -1 : 1;
     ctx.scale(scaleH, scaleV);
-   // ctx.translate( - (this.x + this.sw / 2 + this.offsetX), -(this.y + this.sh / 2 + ));
     Asset.draw(ctx, this.id, this.sx, this.sy, this.sw, this.sh, - this.sw / 2 - this.offsetX, - this.sh / 2 - this.offsetY, this.sw, this.sh);
     ctx.restore();
   }
