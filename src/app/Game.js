@@ -25,34 +25,39 @@ class Game {
 
     this.nextms = 0;
     this.input = Input;
-    this.gameState = GAME_READY;
+    this.state = GAME_READY;
     this.stageNum = 1;
   }
 
 
   init () {
+    Asset.loadAudio('move', './assets/move.mp3');
+    Asset.loadAudio('hit', './assets/hit.mp3');
+    Asset.loadAudio('shot', './assets/shot.mp3');
     this.map = new GameMap(this.ctx);
     this.player = new Player(MAP_SIZE / 2 - 16, MAP_SIZE - 32,  this.map);
     this.input
       .on({ key: ENTER, onKeyDown: () => {
-        switch(this.gameState) {
+        switch(this.state) {
           case GAME_READY:
             selectDom('ready').style.display = 'none';
             this.load(this.stageNum);
-            this.gameState = GAME_PLAYING;
+            this.state = GAME_PLAYING;
+
+
             break;
           case GAME_PLAYING:
             break;
           case GAME_OVER:
             selectDom('over').style.display = 'none';
             this.load(this.stageNum);
-            this.gameState = GAME_PLAYING;
+            this.state = GAME_PLAYING;
             break;
           case GAME_STAGE_CLEAR:
             selectDom('clear').style.display = 'none';
             this.stageNum ++;
             this.load(this.stageNum);
-            this.gameState = GAME_PLAYING;
+            this.state = GAME_PLAYING;
             break;
         }
       }})
@@ -68,10 +73,22 @@ class Game {
 
     Asset.loadImage('enemyTop', ENEMY_HEAD_SPRITE);
     this.input
-      .on({ key: UP, onKeyDown: () => this.player.move(UP) })
-      .on({ key: DOWN, onKeyDown: () => this.player.move(DOWN)})
-      .on({ key: LEFT, onKeyDown: () => this.player.move(LEFT)})
-      .on({ key: RIGHT, onKeyDown: () => this.player.move(RIGHT)});
+      .on({ key: UP, onKeyDown: () => {
+        Asset.playAudio('move');
+          this.player.move(UP);
+        } })
+      .on({ key: DOWN, onKeyDown: () => {
+          Asset.playAudio('move');
+        this.player.move(DOWN);
+        }})
+      .on({ key: LEFT, onKeyDown: () => {
+          Asset.playAudio('move');
+        this.player.move(LEFT)
+        }})
+      .on({ key: RIGHT, onKeyDown: () => {
+          Asset.playAudio('move');
+        this.player.move(RIGHT)
+        }});
   }
 
   update (time) {
@@ -79,7 +96,9 @@ class Game {
     this.player.update(timeSlice);
     this.enemies.forEach(enemy => enemy.update(timeSlice));
     if (this.enemies.every(enemy => !enemy.isAlive)) {
-      this.stageClear();
+      if (this.state === GAME_PLAYING) {
+        this.stageClear();
+      }
     }
   }
 
@@ -92,8 +111,6 @@ class Game {
     this.map.renderReady(this.ctx);
     this.player.render(this.ctx);
   }
-
-
 
   renderPlaying(nms) {
     let time = nms - this.nextms;
@@ -120,9 +137,9 @@ class Game {
   }
 
   render (nms) {
-    if (this.gameState === GAME_READY) {
+    if (this.state === GAME_READY) {
       this.renderReady(nms);
-    } else if (this.gameState === GAME_PLAYING || this.gameState === GAME_OVER || this.gameState === GAME_STAGE_CLEAR) {
+    } else if (this.state === GAME_PLAYING || this.state === GAME_OVER || this.state === GAME_STAGE_CLEAR) {
       this.renderPlaying(nms);
     }
     window.requestAnimationFrame(this.render.bind(this));
@@ -130,13 +147,13 @@ class Game {
 
   // These methods change game state.
   gameOver() {
-    this.gameState = GAME_OVER;
+    this.state = GAME_OVER;
     this.player.isAlive = false;
     selectDom('over').style.display = 'block';
   }
 
   stageClear () {
-    this.gameState = GAME_STAGE_CLEAR;
+    this.state = GAME_STAGE_CLEAR;
     selectDom('clear').style.display = 'block';
   }
 }

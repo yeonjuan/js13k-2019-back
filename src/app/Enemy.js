@@ -52,6 +52,7 @@ class Enemy {
      this.y < player.y + player.height &&
      this.y + this.height > player.y) {
      this.isAlive = false;
+     Asset.playAudio('hit');
      this.scatter.generate(this.x, this.y);
    }
 
@@ -85,6 +86,7 @@ class Enemy {
       const targetY = (intersectionRange[0].y + intersectionRange[1].y) / 2;
       const rad = toRad(this.offset);
       this.bullet.shot(this.x  + this.width / 2 + Math.cos(rad) * 21, this.y + 7 + Math.sin(rad) * 21, targetX, targetY);
+       Asset.playAudio('shot');
    } else {
      this.isAttacking = false;
    }
