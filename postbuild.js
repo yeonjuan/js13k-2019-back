@@ -39,5 +39,5 @@ archive.append(
     name: 'index.html'
   }
 );
-
-archive.finalize()
+archive.glob('./assets/*.png');
+archive.finalize();
