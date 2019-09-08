@@ -113,3 +113,7 @@ export function createImage (src) {
   img.src = src;
   return img;
 }
+
+export function almostEqual (a, b) {
+  return Math.abs(a - b) <= 2;
+}

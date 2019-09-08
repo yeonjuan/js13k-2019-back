@@ -1,5 +1,15 @@
-import {UP, DOWN, LEFT, RIGHT, STOP, ROTATE_TO_LEFT, ROTATE_TO_RIGHT, ENEMY_BODY_SPRITE} from './constants';
-import {toDeg} from "./Utils";
+import {
+  UP,
+  DOWN,
+  LEFT,
+  RIGHT,
+  STOP,
+  ROTATE_TO_LEFT,
+  ROTATE_TO_RIGHT,
+  ENEMY_BODY_SPRITE,
+  ENEMY_HEAD_SPRITE
+} from './constants';
+import {toDeg, toRad, almostEqual} from "./Utils";
 import Vision from './Vision';
 import Bullet from "./Bullet";
 import Asset from "./asset";
@@ -8,7 +18,8 @@ import Scatter from "./Scatter";
 
 class Enemy {
   constructor (x, y, map, cmd, game) {
-    this.sprite = new Sprite('enemyBody', ENEMY_BODY_SPRITE, 3, x, y, 32, 24 * 3);
+    this.bodySprite = new Sprite('enemyBody', ENEMY_BODY_SPRITE, 3, x, y, 32, 24 * 3);
+    this.headSprite = new Sprite('enemyHead', ENEMY_HEAD_SPRITE, 1, x, y, 32, 16);
     this.frameIndex = 0;
     this.frameTime = 0;
     this.x = x;
@@ -45,12 +56,35 @@ class Enemy {
    }
 
    this.vision.update(this.x + this.width / 2 + 2, this.y, this.offset);
+
+   let headAngle = this.offset % 360;
+   if (headAngle > 0) {
+     headAngle -= 360;
+   }
+    if (headAngle < -90) {
+      this.headSprite.rotate(headAngle + 180);
+      this.headSprite.flipVertical(false);
+      this.headSprite.flipHorizontal(false);
+      this.bodySprite.flipHorizontal(false);
+      this.bodySprite.offsetX = 0;
+    } else {
+      this.headSprite.flipVertical(false);
+      this.headSprite.flipHorizontal(true);
+      this.headSprite.rotate(headAngle);
+      this.bodySprite.flipHorizontal(true);
+      this.bodySprite.offsetX = 5;
+    }
+
+    this.headSprite.offsetY = 8;
+    this.headSprite.offsetX = 5;
+
    let intersectionRange = this.vision.getIntersectionRange(player.edges);
    if (intersectionRange && player.isAlive) {
       this.isAttacking = true;
       const targetX = (intersectionRange[0].x + intersectionRange[1].x) / 2;
       const targetY = (intersectionRange[0].y + intersectionRange[1].y) / 2;
-      this.bullet.shot(this.x  + this.width / 2, this.y, targetX, targetY);
+      const rad = toRad(this.offset);
+      this.bullet.shot(this.x  + this.width / 2 + Math.cos(rad) * 21, this.y + 7 + Math.sin(rad) * 21, targetX, targetY);
    } else {
      this.isAttacking = false;
    }
@@ -74,7 +108,7 @@ class Enemy {
     if (this.frameIndex >= 3) {
       this.frameIndex = 0;
     }
-   this.sprite.setFrame(this.frameIndex);
+   this.bodySprite.setFrame(this.frameIndex);
   }
 
   doCmd (time) {
@@ -84,7 +118,6 @@ class Enemy {
     switch(action) {
       case RIGHT:
         {
-          this.offset = 0;
           this.x += step;
           if (this.x > until.x * 16) {
             this.x = until.x * 16;
@@ -128,16 +161,16 @@ class Enemy {
        }
         break;
       case ROTATE_TO_LEFT: {
-        this.offset --;
-        if (this.offset < until.offset) {
+        this.offset  += (until.offset - this.offset) < 0 ? -1 : 1;
+        if (almostEqual(this.offset ,until.offset)) {
           this.offset = until.offset;
           fullFill = true;
         }
       }
       break;
       case ROTATE_TO_RIGHT: {
-        this.offset ++;
-        if (this.offset > until.offset) {
+        this.offset += (until.offset - this.offset) < 0 ? -1 : 1;
+        if (almostEqual(this.offset ,until.offset)) {
           this.offset = until.offset;
           fullFill = true;
         }
@@ -151,8 +184,10 @@ class Enemy {
         this.cmdIndex = 0;
       }
     }
-    this.sprite.x = this.x;
-    this.sprite.y = this.y + 8;
+    this.bodySprite.x = this.x;
+    this.bodySprite.y = this.y + 8;
+    this.headSprite.x = this.x;
+    this.headSprite.y = this.y- 4;
   }
 
   draw (ctx, novCtx) {
@@ -160,11 +195,11 @@ class Enemy {
       this.scatter.render(ctx);
       return;
     }
-    Asset.draw(ctx, 'enemyTop',0,0,32, 16, this.x, this.y, 32, 16);
-    this.sprite.render(ctx);
+    this.headSprite.render(ctx);
+    this.bodySprite.render(ctx);
     this.bullet.render(ctx);
     this.vision.render(novCtx);
   }
-
 }
+
 export default Enemy;

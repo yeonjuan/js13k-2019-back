@@ -14,6 +14,8 @@ class Sprite {
     this.isFlipHorizontal = false;
     this.isFlipVertical = false;
     this.angleDeg = 0;
+    this.offsetY = 0;
+    this.offsetX = 0;
   }
 
   setFrame (index) {
@@ -34,12 +36,13 @@ class Sprite {
 
   render (ctx) {
     ctx.save();
-    ctx.translate(this.x + this.sw / 2, this.y + this.sh / 2);
+    ctx.translate(this.x + this.sw / 2 + this.offsetX, this.y + this.sh / 2 + this.offsetY);
     ctx.rotate(toRad(this.angleDeg));
     const scaleH = this.isFlipHorizontal ? -1 : 1;
     const scaleV = this.isFlipVertical ? -1 : 1;
     ctx.scale(scaleH, scaleV);
-    Asset.draw(ctx, this.id, this.sx, this.sy, this.sw, this.sh, - this.sw / 2, - this.sh / 2, this.sw, this.sh);
+   // ctx.translate( - (this.x + this.sw / 2 + this.offsetX), -(this.y + this.sh / 2 + ));
+    Asset.draw(ctx, this.id, this.sx, this.sy, this.sw, this.sh, - this.sw / 2 - this.offsetX, - this.sh / 2 - this.offsetY, this.sw, this.sh);
     ctx.restore();
   }
 }
