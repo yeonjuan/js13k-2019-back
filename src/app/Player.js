@@ -1,9 +1,9 @@
-import {UP, DOWN, LEFT, RIGHT, STOP, MAP_SIZE, SCATTER_COLOR, BLOCK_SIZE} from './constants';
+import {UP, DOWN, LEFT, RIGHT, STOP, MAP_SIZE, SCATTER_COLOR, BLOCK_SIZE, PLAYER_SPRITE} from './constants';
 import Sprite from "./Sprite";
 import Scatter from "./Scatter";
+
 class Player {
   constructor (x, y, map) {
-
     this.velocity = 0;
     this.maxSpeed = 20;
     this.accel = 1.5;
@@ -13,12 +13,9 @@ class Player {
     this.x = x;
     this.y = y;
 
-
-   // this.hp = MAP_SIZE;
-    this.sprite = new Sprite('player', '../assets/player.png', 3, x, y, 32, 32 * 3);
+    this.sprite = new Sprite('player', PLAYER_SPRITE, 3, x, y, 32, 32 * 3);
     this.scatter = new Scatter(30);
     this.attackedScatter = new Scatter(10, 0.5, SCATTER_COLOR, 5, 2, 4);
-
 
     this._leftTop = {x: this.x, y: this.y};
     this._rightTop = {x: this.x + this.width, y: this.y};

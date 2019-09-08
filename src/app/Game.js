@@ -9,7 +9,7 @@ import {createCanvas, selectDom} from "./Utils";
 import {
   UP, RIGHT, DOWN, LEFT, ENTER,
   MAP_SIZE, BLOCK_SIZE,
-  GAME_READY, GAME_PLAYING, GAME_OVER, GAME_STAGE_CLEAR
+  GAME_READY, GAME_PLAYING, GAME_OVER, GAME_STAGE_CLEAR, ENEMY_HEAD_SPRITE
 } from "./constants";
 
 class Game {
@@ -66,7 +66,7 @@ class Game {
     this.enemies = stage.enemies.map(({x, y, cmd}) => new Enemy(x * BLOCK_SIZE, y * BLOCK_SIZE, this.map, cmd, this));
     this.hud = new Hud();
 
-    Asset.loadImage('enemyTop', '../assets/enemy_top.png');
+    Asset.loadImage('enemyTop', ENEMY_HEAD_SPRITE);
     this.input
       .on({ key: UP, onKeyDown: () => this.player.move(UP) })
       .on({ key: DOWN, onKeyDown: () => this.player.move(DOWN)})
@@ -86,7 +86,6 @@ class Game {
   start() {
     window.requestAnimationFrame(this.render.bind(this))
   }
-
 
   renderReady (nms) {
     this.ctx.clearRect(0,0, this.canvas.width, this.canvas.height);

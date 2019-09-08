@@ -1,4 +1,4 @@
-import {UP, DOWN, LEFT, RIGHT, STOP, ROTATE_TO_LEFT, ROTATE_TO_RIGHT} from './constants';
+import {UP, DOWN, LEFT, RIGHT, STOP, ROTATE_TO_LEFT, ROTATE_TO_RIGHT, ENEMY_BODY_SPRITE} from './constants';
 import {toDeg} from "./Utils";
 import Vision from './Vision';
 import Bullet from "./Bullet";
@@ -8,7 +8,7 @@ import Scatter from "./Scatter";
 
 class Enemy {
   constructor (x, y, map, cmd, game) {
-    this.sprite = new Sprite('enemyBody', '../assets/enemy_body.png', 3, x, y, 32, 24 * 3);
+    this.sprite = new Sprite('enemyBody', ENEMY_BODY_SPRITE, 3, x, y, 32, 24 * 3);
     this.frameIndex = 0;
     this.frameTime = 0;
     this.x = x;
