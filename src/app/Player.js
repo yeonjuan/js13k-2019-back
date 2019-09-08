@@ -57,7 +57,7 @@ class Player {
   }
 
   attacked () {
-    this.hp -= 4;
+    this.hp -= 16;
     this.attackedScatter.generate(this.x + this.width / 2, this.y + this.height/ 2);
     if (this.hp < 0) {
       this.hp = 0;
