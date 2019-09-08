@@ -40,4 +40,5 @@ archive.append(
   }
 );
 archive.glob('./assets/*.png');
+archive.glob('./assets/*.mp3');
 archive.finalize();

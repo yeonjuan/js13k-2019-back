@@ -1,6 +1,7 @@
 import {createImage} from "./Utils";
 
 const _imgs = {};
+const _audios = {};
 
 /**
  * Load image
@@ -28,7 +29,17 @@ function draw(ctx, id, sx, sy, sw, sh, x, y, w, h) {
   ctx.drawImage(_imgs[id], sx, sy, sw, sh, x, y, w, h);
 }
 
+function loadAudio (id, path) {
+  _audios[id] || (_audios[id] = new Audio(path));
+}
+
+function playAudio(id) {
+  _audios[id].paused && _audios[id].play();
+}
+
 export default {
   loadImage,
   draw,
+  loadAudio,
+  playAudio,
 }
