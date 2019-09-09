@@ -1,4 +1,4 @@
-import Asset from './asset';
+import Asset from './Asset';
 import {toRad} from "./Utils";
 
 class Sprite {
@@ -11,8 +11,8 @@ class Sprite {
     this.sx = 0;
     this.x = x;
     this.y = y;
-    this.isFlipHorizontal = false;
-    this.isFlipVertical = false;
+    this.isFlipH = false;
+    this.isFlipV = false;
     this.angleDeg = 0;
     this.offsetY = 0;
     this.offsetX = 0;
@@ -23,11 +23,11 @@ class Sprite {
   }
 
   flipHorizontal (flip) {
-    this.isFlipHorizontal = flip;
+    this.isFlipH = flip;
   }
 
   flipVertical(flip) {
-    this.isFlipVertical = flip;
+    this.isFlipV = flip;
   }
 
   rotate (angleDeg) {
@@ -38,8 +38,8 @@ class Sprite {
     ctx.save();
     ctx.translate(this.x + this.sw / 2 + this.offsetX, this.y + this.sh / 2 + this.offsetY);
     ctx.rotate(toRad(this.angleDeg));
-    const scaleH = this.isFlipHorizontal ? -1 : 1;
-    const scaleV = this.isFlipVertical ? -1 : 1;
+    const scaleH = this.isFlipH ? -1 : 1;
+    const scaleV = this.isFlipV ? -1 : 1;
     ctx.scale(scaleH, scaleV);
     Asset.draw(ctx, this.id, this.sx, this.sy, this.sw, this.sh, - this.sw / 2 - this.offsetX, - this.sh / 2 - this.offsetY, this.sw, this.sh);
     ctx.restore();

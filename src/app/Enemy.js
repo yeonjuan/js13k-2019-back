@@ -12,14 +12,14 @@ import {
 import {toDeg, toRad, almostEqual} from "./Utils";
 import Vision from './Vision';
 import Bullet from "./Bullet";
-import Asset from "./asset";
+import Asset from "./Asset";
 import Sprite from './Sprite';
 import Scatter from "./Scatter";
 
 class Enemy {
   constructor (x, y, map, cmd, game) {
-    this.bodySprite = new Sprite('enemyBody', ENEMY_BODY_SPRITE, 3, x, y, 32, 24 * 3);
-    this.headSprite = new Sprite('enemyHead', ENEMY_HEAD_SPRITE, 1, x, y, 32, 16);
+    this.body = new Sprite('ebody', ENEMY_BODY_SPRITE, 3, x, y, 32, 24 * 3);
+    this.head = new Sprite('ehead', ENEMY_HEAD_SPRITE, 1, x, y, 32, 16);
     this.frameIndex = 0;
     this.frameTime = 0;
     this.x = x;
@@ -63,21 +63,21 @@ class Enemy {
      headAngle -= 360;
    }
     if (headAngle < -90) {
-      this.headSprite.rotate(headAngle + 180);
-      this.headSprite.flipVertical(false);
-      this.headSprite.flipHorizontal(false);
-      this.bodySprite.flipHorizontal(false);
-      this.bodySprite.offsetX = 0;
+      this.head.rotate(headAngle + 180);
+      this.head.flipVertical(false);
+      this.head.flipHorizontal(false);
+      this.body.flipHorizontal(false);
+      this.body.offsetX = 0;
     } else {
-      this.headSprite.flipVertical(false);
-      this.headSprite.flipHorizontal(true);
-      this.headSprite.rotate(headAngle);
-      this.bodySprite.flipHorizontal(true);
-      this.bodySprite.offsetX = 5;
+      this.head.flipVertical(false);
+      this.head.flipHorizontal(true);
+      this.head.rotate(headAngle);
+      this.body.flipHorizontal(true);
+      this.body.offsetX = 5;
     }
 
-    this.headSprite.offsetY = 8;
-    this.headSprite.offsetX = 5;
+    this.head.offsetY = 8;
+    this.head.offsetX = 5;
 
    let intersectionRange = this.vision.getIntersectionRange(player.edges);
    if (intersectionRange && player.isAlive) {
@@ -110,7 +110,7 @@ class Enemy {
     if (this.frameIndex >= 3) {
       this.frameIndex = 0;
     }
-   this.bodySprite.setFrame(this.frameIndex);
+   this.body.setFrame(this.frameIndex);
   }
 
   doCmd (time) {
@@ -186,10 +186,10 @@ class Enemy {
         this.cmdIndex = 0;
       }
     }
-    this.bodySprite.x = this.x;
-    this.bodySprite.y = this.y + 8;
-    this.headSprite.x = this.x;
-    this.headSprite.y = this.y- 4;
+    this.body.x = this.x;
+    this.body.y = this.y + 8;
+    this.head.x = this.x;
+    this.head.y = this.y- 4;
   }
 
   draw (ctx, novCtx) {
@@ -197,8 +197,8 @@ class Enemy {
       this.scatter.render(ctx);
       return;
     }
-    this.headSprite.render(ctx);
-    this.bodySprite.render(ctx);
+    this.head.render(ctx);
+    this.body.render(ctx);
     this.bullet.render(ctx);
     this.vision.render(novCtx);
   }

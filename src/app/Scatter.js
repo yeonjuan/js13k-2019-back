@@ -12,7 +12,7 @@ class Scatter {
         radius: randomInRange(minR,maxR),
         xSpeed: randomInRange(-speed, speed),
         ySpeed: randomInRange(-speed, speed / 3),
-        time: randomInRange(20, this.time),
+        time: randomInRange(20, time),
         x: 0,
         y: 0,
       }));

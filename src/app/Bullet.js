@@ -1,40 +1,35 @@
-import {randomInRange} from "./Utils";
+import {randomInRange, renderLine} from "./Utils";
 import {BULLET_COLOR} from "./constants";
 
 class Bullet {
   constructor () {
-    this.liveTime = 0;
+    this.time = 0;
   }
 
-  shot(originX,originY, targetX, targetY) {
-    if (this.liveTime <= 0) {
-      this.liveTime = 5;
-      this.originX = originX;
-      this.originY = originY;
-      this.targetX = targetX;
-      this.targetY = targetY;
+  shot(ox,oy, tx, ty) {
+    if (this.time <= 0) {
+      this.time = 5;
+      this.ox = ox;
+      this.oy = oy;
+      this.tx = tx;
+      this.ty = ty;
     }
   }
 
   update (time) {
-    this.liveTime > 0 ? this.liveTime -= time : this.liveTime = 0;
+    this.time > 0 ? this.time -= time : this.time = 0;
   }
 
   render (ctx) {
-    if (this.liveTime > 0) {
+    if (this.time > 0) {
       ctx.beginPath();
       ctx.strokeStyle = BULLET_COLOR;
       for (let i = 0; i < 5; i++) {
-        ctx.moveTo(this.originX, this.originY);
-        ctx.lineTo(this.originX + randomInRange(-10, 10), this.originY +  randomInRange(-10, 10));
+        renderLine(ctx, this.ox, this.oy, this.ox + randomInRange(-10, 10), this.oy +  randomInRange(-10, 10));
       }
-
-      ctx.moveTo(this.originX, this.originY);
-      ctx.lineTo(this.targetX, this.targetY);
-
+      renderLine(ctx, this.ox, this.oy, this.tx, this.ty);
       for (let i = 0; i < 5; i++) {
-        ctx.moveTo(this.targetX, this.targetY);
-        ctx.lineTo(this.targetX + randomInRange(-10, 10), this.targetY +  randomInRange(-10, 10));
+        renderLine(ctx, this.tx, this.ty, this.tx + randomInRange(-10, 10), this.ty +  randomInRange(-10, 10));
       }
       ctx.stroke();
     }
