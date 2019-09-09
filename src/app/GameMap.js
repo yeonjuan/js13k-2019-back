@@ -3,13 +3,6 @@ import {scaleMapData, forEachAt2D, create2D} from "./Utils";
 import createMapImage from './Background';
 
 /**
- * Return true, if type is 'block'
- * @param type {string}
- * @returns {boolean}
- */
-const onlyBlock = ({type}) => type === 'block';
-
-/**
  * Convert number to map block index
  * @param num
  * @returns {number}
@@ -43,7 +36,7 @@ const toEdge = ({x, y, w, h}) => {
  * @returns {{x, y, w, h}|*[]}
  */
 const toEdges = mapData => (
-  scaleMapData(mapData.filter(onlyBlock), BLOCK_SIZE)
+  scaleMapData(mapData, BLOCK_SIZE)
     .reduce((edges, rect) => [...edges, ...toEdge(rect)], [])
 );
 
@@ -55,7 +48,6 @@ const toEdges = mapData => (
 const toBlocks = mapData => {
   const blocks = create2D(MAP_BLOCK_SIZE, EMPTY);
   mapData
-    .filter(onlyBlock)
     .forEach(
       ({x, y, w, h}) =>
        forEachAt2D(blocks, [x, x + w], [y, y + h], (blks, tx, ty) => blks[tx][ty] = BLOCK));

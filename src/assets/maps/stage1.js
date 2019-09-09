@@ -1,5 +1,5 @@
 // 16 * 16 * 16
-import {UP, LEFT, RIGHT, DOWN, STOP, ROTATE_TO_RIGHT, ROTATE_TO_LEFT} from "../../app/constants";
+import {LEFT, RIGHT, STOP, ROTATE_TO_RIGHT, ROTATE_TO_LEFT} from "../../app/constants";
 
 const stage = {
   player: {
@@ -7,36 +7,31 @@ const stage = {
     y: 29,
   },
   map: [
-    { // bottom
-      type: 'block',
+    {
       x: 0,
       y: 31,
       w: 32,
       h: 1,
     },
     {
-      type: 'block',
       x: 0,
       y: 0,
       w: 32,
       h: 1,
     },
     {
-      type: 'block',
       x: 16,
       y: 29,
       w: 2,
       h: 3,
     },
     {
-      type: 'block',
       x: 0,
       y: 23,
       w: 20,
       h: 2,
     },
     {
-      type: 'block',
       x: 4,
       y: 16,
       w: 28,

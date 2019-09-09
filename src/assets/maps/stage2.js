@@ -7,15 +7,13 @@ const stage = {
     y: 29,
   },
   map: [
-    { // bottom
-      type: 'block',
+    {
       x: 0,
       y: 31,
       w: 32,
       h: 1,
     },
     {
-      type: 'block',
       x: 0,
       y: 0,
       w: 32,

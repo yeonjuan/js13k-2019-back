@@ -1,4 +1,4 @@
-import {MAP_SIZE, BLOCK_SIZE} from "./constants";
+import {MAP_SIZE, BLOCK_SIZE, BLOCK_COLOR} from "./constants";
 import {randomInRange, randomIntInRange, scaleMapData, createCanvas, createImage} from "./Utils";
 
 // virtual canvas for drawing background
@@ -25,16 +25,20 @@ function drawingEnd(ctx) {
   ctx.restore();
 }
 
+function drawFillRect (ctx, x, y, w, h) {
+  ctx.rect(x, y, w, h);
+  ctx.fill();
+}
+
 /**
  * Draw blocks on mapCanvas
  * @param ctx {CanvasRenderingContext2D}
  * @param scaledBlocks {Array.<{x, y, w, h}>}
  */
 function drawBlocks (ctx, scaledBlocks) {
-  drawingStart(ctx, 'black');
+  drawingStart(ctx, BLOCK_COLOR);
   scaledBlocks.forEach(({x, y, w, h}) => {
-    ctx.rect(x, y, w, h);
-    ctx.fill();
+    drawFillRect(ctx, x, y, w, h);
   });
   drawingEnd(ctx);
 }
@@ -47,11 +51,9 @@ function drawBlocks (ctx, scaledBlocks) {
 function drawGrass (ctx, scaledBlocks) {
   drawingStart(ctx, 'rgba(20, 30, 30, 0.78)');
   scaledBlocks.forEach(({x, y, w}) => {
-    ctx.rect(x, y, w, 5);
-    ctx.fill();
+    drawFillRect(ctx, x, y, w, 5);
     for (let i = x; i < x + w; i += 6) {
-      ctx.rect(i, y + 2, 2, 5);
-      ctx.fill();
+      drawFillRect(ctx, i, y + 2, 2, 5);
     }
   });
   drawingEnd(ctx);
@@ -105,8 +107,7 @@ function drawPartsOfBamboo(ctx, x, y, level, width) {
   for (let i = 0; i < leafNum; i ++ ) {
     drawLeaf(ctx, x , y + 2);
   }
-  ctx.rect(x, y - height, width, height);
-  ctx.fill();
+  drawFillRect(ctx, x, y - height, width, height);
   drawPartsOfBamboo(ctx, x, y - height - 6, level - 1, width);
 }
 
@@ -117,9 +118,9 @@ function drawPartsOfBamboo(ctx, x, y, level, width) {
 function drawBamboos (ctx, depth) {
   const rgba = `rgba(${20 + depth}, ${30 + depth}, ${30 + depth}, 0.78)`;
   drawingStart(ctx, rgba);
-  for (let x = 0; x < 512; x += 10) {
+  for (let x = 0; x < MAP_SIZE; x += 10) {
     if (randomIntInRange(0, 5) < 3) {
-      drawPartsOfBamboo(ctx, x + randomIntInRange(-10, 10), 512, randomIntInRange(3, 6), randomIntInRange(3, 6));
+      drawPartsOfBamboo(ctx, x + randomIntInRange(-10, 10), MAP_SIZE, randomIntInRange(3, 6), randomIntInRange(3, 6));
     }
   }
   drawingEnd(ctx);
@@ -137,7 +138,7 @@ export default function createMapImage (mapData) {
   drawBamboos(mapContext, 0);
 
   if (mapData) {
-    const scaledBlocks = scaleMapData(mapData.filter(({type}) => type === 'block'), BLOCK_SIZE);
+    const scaledBlocks = scaleMapData(mapData, BLOCK_SIZE);
     // drawing
     drawBlocks(mapContext, scaledBlocks);
     drawGrass(mapContext, scaledBlocks);
