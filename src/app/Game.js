@@ -30,12 +30,12 @@ class Game {
   }
 
   init () {
-    Asset.loadImage('player', 'player');
-    Asset.loadImage('ebody', 'ebody');
-    Asset.loadImage('ehead', 'ehead');
-    Asset.loadAudio('move', 'move');
-    Asset.loadAudio('hit', 'hit');
-    Asset.loadAudio('shot', 'shot');
+    Asset.loadImage(PLAYER_SPRITE);
+    Asset.loadImage(ENEMY_BODY_SPRITE);
+    Asset.loadImage(ENEMY_HEAD_SPRITE);
+    Asset.loadAudio(MOVE_AUDIO);
+    Asset.loadAudio(HIT_AUDIO);
+    Asset.loadAudio(SHOT_AUDIO);
 
     this.map = new GameMap(this.ctx);
     this.player = new Player(MAP_SIZE / 2 - 16, MAP_SIZE - 32,  this.map);
@@ -43,7 +43,7 @@ class Game {
       .on({ key: ENTER, onKeyDown: () => {
         switch(this.state) {
           case GAME_READY:
-            selectDom('ready').style.display = 'none';
+            Hud.showHud(READY_HUD, false);
             this.load(this.stageNum);
             this.state = GAME_PLAYING;
             sequence.play();
@@ -51,12 +51,12 @@ class Game {
           case GAME_PLAYING:
             break;
           case GAME_OVER:
-            selectDom('over').style.display = 'none';
+            Hud.showHud(OVER_HUD, false);\
             this.load(this.stageNum);
             this.state = GAME_PLAYING;
             break;
           case GAME_STAGE_CLEAR:
-            selectDom('clear').style.display = 'none';
+            Hud.showHud(CLEAR_HUD, false);
             this.stageNum ++;
             this.load(this.stageNum);
             this.state = GAME_PLAYING;
@@ -71,9 +71,8 @@ class Game {
     this.map.load(stage.map);
     this.player.init(stage.player.x * BLOCK_SIZE, stage.player.y * BLOCK_SIZE);
     this.enemies = stage.enemies.map(({x, y, cmd}) => new Enemy(x * BLOCK_SIZE, y * BLOCK_SIZE, this.map, cmd, this));
-    this.hud = new Hud();
 
-    Asset.loadImage('enemyTop', ENEMY_HEAD_SPRITE);
+
     this.input
       .on({ key: UP, onKeyDown: () => {
           this.player.move(UP);
@@ -114,7 +113,7 @@ class Game {
     this.ctx.clearRect(0,0, MAP_SIZE, MAP_SIZE);
     this.map.render(this.ctx);
     this.player.render(this.ctx);
-    this.hud.render(this.ctx);
+    Hud.renderHp(this.ctx);
     this.novCtx.clearRect(0, 0, MAP_SIZE, MAP_SIZE);
     this.novCtx.fillStyle = 'rgba(0,0,0,0.4)';
     this.novCtx.fillRect(0, 0, MAP_SIZE, MAP_SIZE);
@@ -142,12 +141,12 @@ class Game {
   gameOver() {
     this.state = GAME_OVER;
     this.player.isAlive = false;
-    selectDom('over').style.display = 'block';
+    Hud.showHud(OVER_HUD, true);
   }
 
   stageClear () {
     this.state = GAME_STAGE_CLEAR;
-    selectDom('clear').style.display = 'block';
+    Hud.showHud(CLEAR_HUD, true);
   }
 }
 
