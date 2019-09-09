@@ -1,5 +1,4 @@
 import {UP, DOWN, LEFT, RIGHT, STOP, MAP_SIZE, SCATTER_COLOR, PLAYER_SPRITE} from './constants';
-import {assign} from "./Utils";
 import Sprite from "./Sprite";
 import Scatter from "./Scatter";
 
@@ -155,12 +154,9 @@ class Player {
       this.scatter.render(ctx);
       return;
     }
-    ctx.beginPath();
     this.sprite.x = this.x;
     this.sprite.y = this.y;
     this.sprite.render(ctx);
-    ctx.fill();
-    ctx.stroke();
     this.attackedScatter.render(ctx);
   }
 }
