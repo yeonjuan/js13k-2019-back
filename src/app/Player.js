@@ -1,4 +1,4 @@
-import {UP, DOWN, LEFT, RIGHT, STOP, MAP_SIZE, SCATTER_COLOR, PLAYER_SPRITE} from './constants';
+import {UP, DOWN, LEFT, RIGHT, STOP, MAP_SIZE, SCATTER_COLOR, PLAYER_SPRITE, MOVE_AUDIO} from './constants';
 import Sprite from "./Sprite";
 import Scatter from "./Scatter";
 import Asset from "./Asset";
@@ -14,7 +14,7 @@ class Player {
     this.x = x;
     this.y = y;
 
-    this.sprite = new Sprite('player', PLAYER_SPRITE, 3, x, y, 32, 32 * 3);
+    this.sprite = new Sprite(PLAYER_SPRITE,3, x, y, 32, 32 * 3);
     this.scatter = new Scatter(30);
     this.attackedScatter = new Scatter(10, 0.5, SCATTER_COLOR, 5, 2, 4);
 
@@ -143,7 +143,7 @@ class Player {
 
   move (moving) {
     if (this.moving === STOP) {
-      Asset.playAudio('move');
+      Asset.play(MOVE_AUDIO);
       const {x, y} = this.map.getOuterMost(this, moving);
       this.dx = x;
       this.dy = y;

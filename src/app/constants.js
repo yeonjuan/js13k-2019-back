@@ -30,6 +30,14 @@ export const SCATTER_COLOR = 'black';
 
 
 // For resources
-export const PLAYER_SPRITE = './assets/player.png';
-export const ENEMY_HEAD_SPRITE = './assets/enemy_top.png';
-export const ENEMY_BODY_SPRITE = './assets/enemy_body.png';
+//export const PLAYER_SPRITE = './assets/player.png';
+//export const ENEMY_HEAD_SPRITE = './assets/enemy_top.png';
+//export const ENEMY_BODY_SPRITE = './assets/enemy_body.png';
+
+export const ENEMY_BODY_SPRITE = 'ebody';
+export const ENEMY_HEAD_SPRITE = 'ehead';
+export const PLAYER_SPRITE = 'player';
+export const HIT_AUDIO = 'hit';
+export const MOVE_AUDIO = 'move';
+export const SHOT_AUDIO = 'shot';
+

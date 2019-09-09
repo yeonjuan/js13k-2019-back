@@ -7,7 +7,9 @@ import {
   ROTATE_TO_LEFT,
   ROTATE_TO_RIGHT,
   ENEMY_BODY_SPRITE,
-  ENEMY_HEAD_SPRITE
+  ENEMY_HEAD_SPRITE,
+  HIT_AUDIO,
+  SHOT_AUDIO
 } from './constants';
 import {toDeg, toRad, almostEqual} from "./Utils";
 import Vision from './Vision';
@@ -18,8 +20,8 @@ import Scatter from "./Scatter";
 
 class Enemy {
   constructor (x, y, map, cmd, game) {
-    this.body = new Sprite('ebody', ENEMY_BODY_SPRITE, 3, x, y, 32, 24 * 3);
-    this.head = new Sprite('ehead', ENEMY_HEAD_SPRITE, 1, x, y, 32, 16);
+    this.body = new Sprite(ENEMY_BODY_SPRITE, 3, x, y, 32, 24 * 3);
+    this.head = new Sprite(ENEMY_HEAD_SPRITE,1, x, y, 32, 16);
     this.frameIndex = 0;
     this.frameTime = 0;
     this.x = x;
@@ -52,7 +54,7 @@ class Enemy {
      this.y < player.y + player.height &&
      this.y + this.height > player.y) {
      this.isAlive = false;
-     Asset.playAudio('hit');
+     Asset.play(HIT_AUDIO);
      this.scatter.generate(this.x, this.y);
    }
 
@@ -86,7 +88,7 @@ class Enemy {
       const targetY = (intersectionRange[0].y + intersectionRange[1].y) / 2;
       const rad = toRad(this.offset);
       this.bullet.shot(this.x  + this.width / 2 + Math.cos(rad) * 21, this.y + 7 + Math.sin(rad) * 21, targetX, targetY);
-       Asset.playAudio('shot');
+       Asset.play(SHOT_AUDIO);
    } else {
      this.isAttacking = false;
    }

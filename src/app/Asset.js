@@ -8,8 +8,8 @@ const _dir = './assets/';
  * @param {string} id - image id
  * @param {string} path - image file path
  */
-function loadImage (id, path) {
-  _imgs[id] || (_imgs[id] = createImage(_dir + path + '.png'));
+function loadImage (id) {
+  _imgs[id] || (_imgs[id] = createImage(_dir + id + '.png'));
 }
 
 /**
@@ -29,11 +29,11 @@ function draw(ctx, id, sx, sy, sw, sh, x, y, w, h) {
   ctx.drawImage(_imgs[id], sx, sy, sw, sh, x, y, w, h);
 }
 
-function loadAudio (id, path) {
-  _audios[id] || (_audios[id] = new Audio(_dir + path + '.mp3'));
+function loadAudio (id) {
+  _audios[id] || (_audios[id] = new Audio(_dir + id + '.mp3'));
 }
 
-function playAudio(id) {
+function play(id) {
   _audios[id].paused && _audios[id].play();
 }
 
@@ -41,5 +41,5 @@ export default {
   loadImage,
   draw,
   loadAudio,
-  playAudio,
+  play,
 }

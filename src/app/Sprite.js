@@ -2,7 +2,7 @@ import Asset from './Asset';
 import {toRad} from "./Utils";
 
 class Sprite {
-  constructor (id, path, frameNum, x, y, width, height) {
+  constructor (id, frameNum, x, y, width, height) {
     this.id = id;
     this.sh = (height / frameNum) | 0;
     this.sw = width;
