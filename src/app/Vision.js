@@ -63,11 +63,10 @@ class Vision {
   }
 
   getIntersectionRange (edges) {
-    let firstIntersection;
-    let lastIntersection;
-    for (let r = 0, raysLen = this.rayEnds.length; r < raysLen; r ++) {
-      for (let e = 0, edgesLen = edges.length; e < edgesLen; e++) {
-        let intersection = getIntersection([this.origin, this.rayEnds[r]], edges[e]);
+    let firstIntersection = null, lastIntersection = null;
+    this.rayEnds.forEach(rayEnd => {
+      edges.forEach(edge => {
+        let intersection = getIntersection([this.origin, rayEnd], edge);
         if (intersection && lastIntersection) {
           lastIntersection = intersection;
         }
@@ -75,8 +74,8 @@ class Vision {
           firstIntersection = intersection;
           lastIntersection = intersection;
         }
-      }
-    }
+      })
+    });
     if (!firstIntersection) {
       return null;
     }
@@ -98,11 +97,10 @@ class Vision {
       const visionEndX = this.origin.x + Math.cos(visionRad) * this.radius;
       const visionEndY = this.origin.y + Math.sin(visionRad) * this.radius;
       const visionEnd = {x: visionEndX, y: visionEndY};
-
-      for (let i = 0, edgeNum = this.mapEdges.length; i < edgeNum; i++) {
-        const inter = getIntersection([this.origin, visionEnd], [this.mapEdges[i].start, this.mapEdges[i].end]);
+      this.mapEdges.forEach(mapEdge => {
+        const inter = getIntersection([this.origin, visionEnd], [mapEdge.start, mapEdge.end]);
         this.rayEnds[endIndex] = getShorter(this.origin, this.rayEnds[endIndex], inter || visionEnd);
-      }
+      });
       visionDeg += this.gap;
       endIndex ++;
     }
