@@ -1,3 +1,4 @@
+const {random, ceil, floor, abs, PI} = Math;
 /**
  * Return random float number in range (min, max).
  * @param min {number} - minimum.
@@ -5,7 +6,7 @@
  * @returns {number} - random float.
  */
 export function randomInRange(min, max) {
-  return Math.random() * (max - min) + min;
+  return random() * (max - min) + min;
 }
 
 /**
@@ -15,9 +16,9 @@ export function randomInRange(min, max) {
  * @returns {number} - random integer.
  */
 export function randomIntInRange(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max) + 1;
-  return Math.floor(Math.random() * (max - min)) + min;
+  min = ceil(min);
+  max = floor(max) + 1;
+  return floor(random() * (max - min)) + min;
 }
 
 /**
@@ -83,7 +84,6 @@ export function selectDom (id) {
   return document.getElementById(id);
 }
 
-const PI = Math.PI;
 
 /**
  * Convert radian to degree.
@@ -115,5 +115,14 @@ export function createImage (src) {
 }
 
 export function almostEqual (a, b) {
-  return Math.abs(a - b) <= 2;
+  return abs(a - b) <= 2;
+}
+
+export function assign (target, source) {
+  return Object.assign(target, source);
+}
+
+export function renderLine (ctx, x, y, tx, ty) {
+  ctx.moveTo(x,y);
+  ctx.lineTo(tx, ty);
 }
