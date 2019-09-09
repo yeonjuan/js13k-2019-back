@@ -1,6 +1,7 @@
 import {UP, DOWN, LEFT, RIGHT, STOP, MAP_SIZE, SCATTER_COLOR, PLAYER_SPRITE} from './constants';
 import Sprite from "./Sprite";
 import Scatter from "./Scatter";
+import Asset from "./Asset";
 
 class Player {
   constructor (x, y, map) {
@@ -142,6 +143,7 @@ class Player {
 
   move (moving) {
     if (this.moving === STOP) {
+      Asset.playAudio('move');
       const {x, y} = this.map.getOuterMost(this, moving);
       this.dx = x;
       this.dy = y;

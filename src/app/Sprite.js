@@ -3,7 +3,6 @@ import {toRad} from "./Utils";
 
 class Sprite {
   constructor (id, path, frameNum, x, y, width, height) {
-    Asset.loadImage(id, path);
     this.id = id;
     this.sh = (height / frameNum) | 0;
     this.sw = width;

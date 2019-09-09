@@ -2,14 +2,14 @@ import {createImage} from "./Utils";
 
 const _imgs = {};
 const _audios = {};
-
+const _dir = './assets/';
 /**
  * Load image
  * @param {string} id - image id
  * @param {string} path - image file path
  */
 function loadImage (id, path) {
-  _imgs[id] || (_imgs[id] = createImage(path));
+  _imgs[id] || (_imgs[id] = createImage(_dir + path + '.png'));
 }
 
 /**
@@ -30,7 +30,7 @@ function draw(ctx, id, sx, sy, sw, sh, x, y, w, h) {
 }
 
 function loadAudio (id, path) {
-  _audios[id] || (_audios[id] = new Audio(path));
+  _audios[id] || (_audios[id] = new Audio(_dir + path + '.mp3'));
 }
 
 function playAudio(id) {

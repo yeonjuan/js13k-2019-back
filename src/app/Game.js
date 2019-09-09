@@ -3,7 +3,7 @@ import getStage from "../assets/maps";
 import Player from './player';
 import Enemy from "./Enemy";
 import Input from './Input';
-import Asset from './asset';
+import Asset from './Asset';
 import Hud from './Hud';
 import {createCanvas, selectDom} from "./Utils";
 import {
@@ -29,11 +29,14 @@ class Game {
     this.stageNum = 1;
   }
 
-
   init () {
-    Asset.loadAudio('move', './assets/move.mp3');
-    Asset.loadAudio('hit', './assets/hit.mp3');
-    Asset.loadAudio('shot', './assets/shot.mp3');
+    Asset.loadImage('player', 'player');
+    Asset.loadImage('ebody', 'ebody');
+    Asset.loadImage('ehead', 'ehead');
+    Asset.loadAudio('move', 'move');
+    Asset.loadAudio('hit', 'hit');
+    Asset.loadAudio('shot', 'shot');
+
     this.map = new GameMap(this.ctx);
     this.player = new Player(MAP_SIZE / 2 - 16, MAP_SIZE - 32,  this.map);
     this.input
@@ -43,8 +46,7 @@ class Game {
             selectDom('ready').style.display = 'none';
             this.load(this.stageNum);
             this.state = GAME_PLAYING;
-
-
+            sequence.play();
             break;
           case GAME_PLAYING:
             break;
@@ -74,19 +76,15 @@ class Game {
     Asset.loadImage('enemyTop', ENEMY_HEAD_SPRITE);
     this.input
       .on({ key: UP, onKeyDown: () => {
-        Asset.playAudio('move');
           this.player.move(UP);
         } })
       .on({ key: DOWN, onKeyDown: () => {
-          Asset.playAudio('move');
         this.player.move(DOWN);
         }})
       .on({ key: LEFT, onKeyDown: () => {
-          Asset.playAudio('move');
         this.player.move(LEFT)
         }})
       .on({ key: RIGHT, onKeyDown: () => {
-          Asset.playAudio('move');
         this.player.move(RIGHT)
         }});
   }
@@ -95,11 +93,7 @@ class Game {
     const timeSlice = (time / 1000) * 60;
     this.player.update(timeSlice);
     this.enemies.forEach(enemy => enemy.update(timeSlice));
-    if (this.enemies.every(enemy => !enemy.isAlive)) {
-      if (this.state === GAME_PLAYING) {
-        this.stageClear();
-      }
-    }
+    this.enemies.every(enemy => !enemy.isAlive) && (this.state === GAME_PLAYING) && this.stageClear();
   }
 
   start() {
@@ -126,12 +120,11 @@ class Game {
     this.novCtx.fillRect(0, 0, MAP_SIZE, MAP_SIZE);
     this.enemies.forEach(enemy => enemy.draw(this.ctx, this.novCtx));
     this.ctx.save();
-
     this.ctx.globalCompositeOperation = 'darken';
     this.ctx.drawImage(this.novCanvas, 0, 0);
     this.ctx.restore();
 
-    if (this.player.hp <= 0 && this.gameState === GAME_PLAYING) {
+    if (this.player.hp <= 0 && this.state === GAME_PLAYING) {
       this.gameOver();
     }
   }
