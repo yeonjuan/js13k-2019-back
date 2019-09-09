@@ -1,4 +1,5 @@
 import {UP, DOWN, LEFT, RIGHT, STOP, MAP_SIZE, SCATTER_COLOR, PLAYER_SPRITE} from './constants';
+import {assign} from "./Utils";
 import Sprite from "./Sprite";
 import Scatter from "./Scatter";
 
@@ -40,6 +41,8 @@ class Player {
     this.moving = STOP;
     this.updateEdges();
     this.stop();
+    this.attackedScatter.init();
+    this.scatter.init();
   }
 
   updateEdges () {
@@ -63,9 +66,7 @@ class Player {
       this.hp = 0;
     }
   }
-  die () {
-    this.scatter.generate(this.x, this.y);
-  }
+
   update(time) {
     if (!this.isAlive) {
       this.scatter.generate(this.x, this.y);

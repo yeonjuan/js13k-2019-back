@@ -17,6 +17,10 @@ class Scatter {
         y: 0,
       }));
   }
+  init () {
+    this.time = 30;
+    this.alive = false;
+  }
 
   generate(x, y) {
     if (this.alive) {
