@@ -6,8 +6,7 @@ class Sprite {
     this.id = id;
     this.sh = (height / frameNum) | 0;
     this.sw = width;
-    this.sy = 0;
-    this.sx = 0;
+    this.frame = 0;
     this.x = x;
     this.y = y;
     this.isFlipH = false;
@@ -17,30 +16,18 @@ class Sprite {
     this.offsetX = 0;
   }
 
-  setFrame (index) {
-    this.sy = index * this.sh;
-  }
-
-  flipHorizontal (flip) {
-    this.isFlipH = flip;
-  }
-
-  flipVertical(flip) {
-    this.isFlipV = flip;
-  }
-
-  rotate (angleDeg) {
-    this.angleDeg = angleDeg;
+  pos (x, y){
+    this.x = x;
+    this.y = y;
   }
 
   render (ctx) {
+    const {x,y, frame, sw, sh, offsetX, offsetY, isFlipV, isFlipH, angleDeg, id} = this;
     ctx.save();
-    ctx.translate(this.x + this.sw / 2 + this.offsetX, this.y + this.sh / 2 + this.offsetY);
-    ctx.rotate(toRad(this.angleDeg));
-    const scaleH = this.isFlipH ? -1 : 1;
-    const scaleV = this.isFlipV ? -1 : 1;
-    ctx.scale(scaleH, scaleV);
-    Asset.draw(ctx, this.id, this.sx, this.sy, this.sw, this.sh, - this.sw / 2 - this.offsetX, - this.sh / 2 - this.offsetY, this.sw, this.sh);
+    ctx.translate(x + sw / 2 + offsetX, y + sh / 2 + offsetY);
+    ctx.rotate(toRad(angleDeg));
+    ctx.scale(isFlipH ? -1 : 1, isFlipV ? -1 : 1);
+    Asset.draw(ctx, id, 0, frame * sh, sw, sh, - sw / 2 - offsetX, - sh / 2 - offsetY, sw, sh);
     ctx.restore();
   }
 }
