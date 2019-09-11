@@ -1,3 +1,5 @@
+import {CLEAR_HUD, OVER_HUD, READY_HUD} from "./constants";
+
 const {random, ceil, floor, abs, PI} = Math;
 /**
  * Return random float number in range (min, max).
@@ -76,16 +78,6 @@ export function create2D (size, fill) {
 }
 
 /**
- *
- * @param id
- * @returns {HTMLElement}
- */
-export function selectDom (id) {
-  return document.getElementById(id);
-}
-
-
-/**
  * Convert radian to degree.
  * @param rad {number} - radian.
  * @returns {number} - degree.
@@ -125,4 +117,23 @@ export function assign (target, source) {
 export function renderLine (ctx, x, y, tx, ty) {
   ctx.moveTo(x,y);
   ctx.lineTo(tx, ty);
+}
+
+const _doms = {
+  [READY_HUD]: selectDom(READY_HUD),
+  [OVER_HUD]: selectDom(OVER_HUD),
+  [CLEAR_HUD]: selectDom(CLEAR_HUD),
+};
+
+export function showDom (id, visible) {
+  _doms[id].style.display = (visible ? 'block' : 'none');
+}
+
+/**
+ *
+ * @param id
+ * @returns {HTMLElement}
+ */
+export function selectDom (id) {
+  return document.getElementById(id);
 }
