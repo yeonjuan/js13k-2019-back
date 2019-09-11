@@ -70,31 +70,32 @@ class GameMap {
   getOuterMost ({x, y, width, height}, moving) {
     const xIndex = toBlockIdx(x + width / 2);
     const yIndex = toBlockIdx(y + height / 2);
+    const {blocks} = this;
     switch (moving) {
       case LEFT:
         for (let i = xIndex; i >= 0; i --) {
-          if (this.blocks[i][yIndex] === BLOCK) {
+          if (blocks[i][yIndex] === BLOCK) {
             return { x: (i + 1) * BLOCK_SIZE, y};
           }
         }
         return {x: 0, y};
       case UP:
           for (let i = yIndex; i >= 0; i --) {
-            if (this.blocks[xIndex][i] === BLOCK) {
+            if (blocks[xIndex][i] === BLOCK) {
               return { x, y: (i + 1) * BLOCK_SIZE};
             }
           }
           return {x, y: 0};
       case DOWN:
           for (let i = yIndex; i < MAP_BLOCK_SIZE; i ++) {
-            if (this.blocks[xIndex][i] === BLOCK) {
+            if (blocks[xIndex][i] === BLOCK) {
               return { x, y: i * BLOCK_SIZE - height};
             }
           }
           return {x, y: MAP_SIZE - height};
       case RIGHT:
         for (let i = xIndex; i < MAP_BLOCK_SIZE; i ++) {
-          if (this.blocks[i][yIndex] === BLOCK) {
+          if (blocks[i][yIndex] === BLOCK) {
             return { x: i * BLOCK_SIZE - width, y};
           }
         }
@@ -110,11 +111,10 @@ class GameMap {
 
   renderReady (ctx) {
     this.x += 0.5;
-    if (this.x >= MAP_SIZE - 1) {
-      this.x = 0;
-    }
-    ctx.drawImage(this.img, 0, 0, MAP_SIZE - this.x, MAP_SIZE, this.x, 0, MAP_SIZE - this.x, MAP_SIZE);
-    ctx.drawImage(this.img, MAP_SIZE - this.x, 0, this.x, MAP_SIZE, 0, 0, this.x, MAP_SIZE);
+    (this.x >= MAP_SIZE - 1) && (this.x = 0);
+    const {x, img} = this;
+    ctx.drawImage(img, 0, 0, MAP_SIZE - x, MAP_SIZE, x, 0, MAP_SIZE - x, MAP_SIZE);
+    ctx.drawImage(img, MAP_SIZE - x, 0, x, MAP_SIZE, 0, 0, x, MAP_SIZE);
   }
 
   render (ctx) {
