@@ -1,4 +1,16 @@
-import {UP, DOWN, LEFT, RIGHT, STOP, MAP_SIZE, SCATTER_COLOR, PLAYER_SPRITE, MOVE_AUDIO} from './constants';
+import {
+  UP,
+  DOWN,
+  LEFT,
+  RIGHT,
+  STOP,
+  MAP_SIZE,
+  SCATTER_COLOR,
+  PLAYER_SPRITE,
+  MOVE_AUDIO,
+  HIT_AUDIO,
+  SHOT_AUDIO, HP_COLOR
+} from './constants';
 import Sprite from "./Sprite";
 import Scatter from "./Scatter";
 import Asset from "./Asset";
@@ -7,10 +19,11 @@ import {assign} from "./Utils";
 
 class Player extends Entity{
   constructor(x, y, map) {
-    super(x, y, 32, 32, 20, 1.5, map);
-    this.sprite = new Sprite(PLAYER_SPRITE,3, x, y, 32, 32 * 3);
+    super(x, y, 32, 32, 10, 1.5, map);
+    this.sprite = new Sprite(PLAYER_SPRITE,1, x, y, 32, 32);
     this.dieScatter = new Scatter(30);
     this.attackedScatter = new Scatter(10, 10, SCATTER_COLOR, 5, 2, 4);
+    this.hp = MAP_SIZE;
     this._lT = {x, y};
     this._rT = {x: this.x + this.width, y};
     this._lB = {x, y: this.y + this.height};
@@ -32,6 +45,7 @@ class Player extends Entity{
 
   move (moving) {
     if (this.moving === STOP) {
+      Asset.play(MOVE_AUDIO);
       const {x, y} = this.map.getOuterMost(this, moving);
       this.moveUntil(moving, x, y);
     }
@@ -51,8 +65,8 @@ class Player extends Entity{
     } else if (map.hasBlockAt(x + width + 4, y + height/ 2)) {
       angle = -90;
     }
-    sprite.flipVertical(flipV);
-    sprite.rotate(angle);
+    sprite.isFlipV = flipV;
+    sprite.angleDeg = angle;
   }
 
   attacked() {
@@ -61,8 +75,12 @@ class Player extends Entity{
       return;
     }
     attackedScatter.generate(x, y);
+
     this.hp -= 16;
+    Asset.play(SHOT_AUDIO);
+
     if (this.hp < 0) {
+      Asset.play(HIT_AUDIO);
       this.hp = 0;
       this.alive = false;
       dieScatter.generate(x, y);
@@ -93,14 +111,19 @@ class Player extends Entity{
   }
 
   render (ctx) {
+    this.renderHp(ctx);
     const {alive, dieScatter, x, y, sprite} = this;
     if (!alive) {
       dieScatter.render(ctx);
       return;
     }
-    sprite.x = x;
-    sprite.y = y;
+    sprite.pos(x, y);
     sprite.render(ctx);
+  }
+
+  renderHp (ctx) {
+    ctx.fillStyle = HP_COLOR;
+    ctx.fillRect(0, 0, this.hp, 5);
   }
 }
 

@@ -9,15 +9,21 @@ import {
   ENEMY_BODY_SPRITE,
   ENEMY_HEAD_SPRITE,
   HIT_AUDIO,
-  SHOT_AUDIO
+  SHOT_AUDIO, BULLET_COLOR
 } from './constants';
-import {toDeg, toRad, almostEqual} from "./Utils";
+import {toDeg, toRad, almostEqual, renderLine, randomInRange} from "./Utils";
 import Vision from './Vision';
-import Bullet from "./Bullet";
 import Sprite from './Sprite';
 import Scatter from "./Scatter";
 import Entity from "./Entity";
 import {assign} from "./Utils";
+import Asset from "./Asset";
+
+function renderEndPoint (ctx, x, y) {
+  for (let i = 0; i < 5; i++) {
+    renderLine(ctx, x, y, x + randomInRange(-10, 10), y +  randomInRange(-10, 10));
+  }
+}
 
 class Enemy extends Entity {
   constructor(x, y, map, cmd, game) {
@@ -26,16 +32,15 @@ class Enemy extends Entity {
       body: new Sprite(ENEMY_BODY_SPRITE, 3, x, y, 32, 24 * 3),
       head: new Sprite(ENEMY_HEAD_SPRITE, 1, x, y, 32, 16),
       dieScatter: new Scatter(20),
-      bullet: new Bullet(),
+      bulletTimer: 0,
       offset: 0,
-      frameIndex: 0,
       frameTime: 0,
       cmd,
       cmdFullFill: false,
       cmdIndex: 0,
       timer: 0,
       player: game.player,
-      vision: new Vision(x, y, 2, map.edges, 30, 0, 1000)
+      vision: new Vision(x, y, map.edges, 30,1000)
     });
     this.head.offsetY = 8;
     this.head.offsetX = 5;
@@ -48,8 +53,9 @@ class Enemy extends Entity {
     }
 
     super.update(time);
-    const {player, width, height, x, y, vision, dieScatter, offset, bullet} = this;
+    const {player, width, height, x, y, vision, dieScatter, offset} = this;
     if (x < player.x + player.width && x + width > player.x && y < player.y + player.height && y + height > player.y) {
+      Asset.play(HIT_AUDIO);
       this.alive = false;
       dieScatter.generate(x, y);
     }
@@ -63,16 +69,21 @@ class Enemy extends Entity {
       const targetX = (intersectionRange[0].x + intersectionRange[1].x) / 2;
       const targetY = (intersectionRange[0].y + intersectionRange[1].y) / 2;
       const rad = toRad(offset);
-      const diffY = targetY - y;
-      const diffX = targetX - x;
+      const diffY = player.y + player.height / 2 - y;
+      const diffX = player.x + player.width / 2 - x;
       this.offset = toDeg(Math.atan2(diffY, diffX));
-      bullet.shot(x  + width / 2 + Math.cos(rad) * 21, y + 7 + Math.sin(rad) * 21, targetX, targetY);
+      this.ox = x  + width / 2 + Math.cos(rad) * 21;
+      this.oy =  y + 7 + Math.sin(rad) * 21;
+      this.tx = targetX;
+      this.ty = targetY;
+      (this.bulletTimer <= 0) && (this.bulletTimer = 5);
       player.attacked();
     } else {
       this.updateViaCmd(time);
     }
-    bullet.update(time);
+    this.bulletTimer > 0 ? this.bulletTimer -= time : this.bulletTimer = 0;
   }
+
 
   updateSprite (time) {
     const {head, offset, body, x, y} = this;
@@ -81,28 +92,24 @@ class Enemy extends Entity {
       headAngle -= 360;
     }
     if (headAngle < -90) {
-      head.rotate(headAngle + 180);
-      head.flipHorizontal(false);
-      body.flipHorizontal(false);
+      head.angleDeg = headAngle + 180;
+      head.isFlipH = false;
+      body.isFlipH = false;
       body.offsetX = 0;
     } else {
-      head.rotate(headAngle);
-      head.flipHorizontal(true);
-      body.flipHorizontal(true);
+      head.angleDeg = headAngle;
+      head.isFlipH = true;
+      body.isFlipH = true;
       body.offsetX = 5;
     }
     this.frameTime += time;
     if (this.frameTime > 10) {
       this.frameTime = 0;
-      this.frameIndex ++;
+      body.frame ++;
     }
-    this.frameIndex %= 3;
-
-    body.setFrame(this.frameIndex);
-    body.x = x;
-    body.y = y + 8;
-    head.x = x;
-    head.y = y- 4;
+    body.frame %= 3;
+    body.pos(x, y + 8);
+    head.pos(x, y - 4);
   }
 
   updateViaCmd (time) {
@@ -131,15 +138,27 @@ class Enemy extends Entity {
   }
 
   render (ctx, novCtx) {
-    const {alive, dieScatter, bullet, vision, head, body} = this;
+    const {alive, dieScatter, vision, head, body} = this;
     if (!alive) {
       dieScatter.render(ctx);
       return;
     }
     head.render(ctx);
     body.render(ctx);
-    bullet.render(ctx);
+    this.renderBullet(ctx);
     vision.render(novCtx);
+  }
+
+  renderBullet (ctx) {
+    const {bulletTimer, ox, oy, tx, ty} = this;
+    if (bulletTimer > 0) {
+      ctx.beginPath();
+      ctx.strokeStyle = BULLET_COLOR;
+      renderEndPoint(ctx, ox, oy);
+      renderLine(ctx, ox, oy, tx, ty);
+      renderEndPoint(ctx, tx, ty);
+      ctx.stroke();
+    }
   }
 }
 
