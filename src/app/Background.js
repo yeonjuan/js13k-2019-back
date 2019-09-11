@@ -1,13 +1,13 @@
 import {MAP_SIZE, BLOCK_SIZE, BLOCK_COLOR} from "./constants";
 import {randomInRange, randomIntInRange, scaleMapData, createCanvas, createImage} from "./Utils";
 
-// virtual canvas for drawing background
+// Virtual canvas for drawing background
 const mcvs = createCanvas(MAP_SIZE, MAP_SIZE);
 const mapCanvas = mcvs.canvas;
 const mapContext = mcvs.context;
 
 /**
- * start Drawing with context style
+ * Start drawing with context fill style.
  * @param ctx {CanvasRenderingContext2D}
  * @param style {string}
  */

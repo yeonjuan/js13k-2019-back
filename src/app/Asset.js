@@ -3,17 +3,17 @@ import {createImage} from "./Utils";
 const _imgs = {};
 const _audios = {};
 const _dir = './assets/';
+
 /**
- * Load image
- * @param {string} id - image id
- * @param {string} path - image file path
+ * Load images.
+ * @param {Array.<string|number>} ids - image IDs
  */
 function loadImages (ids) {
   ids.forEach(id => _imgs[id] || (_imgs[id] = createImage(_dir + id + '.png')));
 }
 
 /**
- * Draw image
+ * Draw Asset image.
  * @param {CanvasRenderingContext2D} ctx - canvas' 2D rendering context
  * @param {string} id - image id
  * @param {number} sx - x in source.
@@ -29,10 +29,18 @@ function draw(ctx, id, sx, sy, sw, sh, x, y, w, h) {
   ctx.drawImage(_imgs[id], sx, sy, sw, sh, x, y, w, h);
 }
 
+/**
+ * Load audios.
+ * @param {Array.<string|number>} ids - audio IDs
+ */
 function loadAudios (ids) {
   ids.forEach(id => _audios[id] || (_audios[id] = new Audio(_dir + id + '.mp3')));
 }
 
+/**
+ * Play audio.
+ * @param {string} id - audio id.
+ */
 function play(id) {
   _audios[id].paused && _audios[id].play();
 }
