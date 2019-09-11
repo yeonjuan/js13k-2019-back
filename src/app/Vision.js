@@ -67,12 +67,12 @@ class Vision {
     this.rayEnds.forEach(rayEnd => {
       edges.forEach(edge => {
         let intersection = getIntersection([this.origin, rayEnd], edge);
-        if (intersection && lastIntersection) {
-          lastIntersection = intersection;
-        }
-        if (intersection && !firstIntersection) {
-          firstIntersection = intersection;
-          lastIntersection = intersection;
+        if (intersection) {
+          (lastIntersection) && (lastIntersection = intersection);
+          if (!firstIntersection) {
+            firstIntersection = intersection;
+            lastIntersection = intersection;
+          }
         }
       })
     });

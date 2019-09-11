@@ -1,6 +1,11 @@
 import {randomInRange, renderLine} from "./Utils";
 import {BULLET_COLOR} from "./constants";
 
+function renderEndPoint (ctx, x, y) {
+  for (let i = 0; i < 5; i++) {
+    renderLine(ctx, x, y, x + randomInRange(-10, 10), y +  randomInRange(-10, 10));
+  }
+}
 class Bullet {
   constructor () {
     this.time = 0;
@@ -22,15 +27,12 @@ class Bullet {
 
   render (ctx) {
     if (this.time > 0) {
+      const {ox, oy, tx, ty} = this;
       ctx.beginPath();
       ctx.strokeStyle = BULLET_COLOR;
-      for (let i = 0; i < 5; i++) {
-        renderLine(ctx, this.ox, this.oy, this.ox + randomInRange(-10, 10), this.oy +  randomInRange(-10, 10));
-      }
-      renderLine(ctx, this.ox, this.oy, this.tx, this.ty);
-      for (let i = 0; i < 5; i++) {
-        renderLine(ctx, this.tx, this.ty, this.tx + randomInRange(-10, 10), this.ty +  randomInRange(-10, 10));
-      }
+      renderEndPoint(ctx, ox, oy);
+      renderLine(ctx, ox, oy, tx, ty);
+      renderEndPoint(ctx, tx, ty);
       ctx.stroke();
     }
   }
