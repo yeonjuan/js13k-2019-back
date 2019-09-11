@@ -25,11 +25,6 @@ function drawingEnd(ctx) {
   ctx.restore();
 }
 
-function drawFillRect (ctx, x, y, w, h) {
-  ctx.rect(x, y, w, h);
-  ctx.fill();
-}
-
 /**
  * Draw blocks on mapCanvas
  * @param ctx {CanvasRenderingContext2D}
@@ -37,9 +32,7 @@ function drawFillRect (ctx, x, y, w, h) {
  */
 function drawBlocks (ctx, scaledBlocks) {
   drawingStart(ctx, BLOCK_COLOR);
-  scaledBlocks.forEach(({x, y, w, h}) => {
-    drawFillRect(ctx, x, y, w, h);
-  });
+  scaledBlocks.forEach(({x, y, w, h}) => ctx.fillRect(x, y, w, h));
   drawingEnd(ctx);
 }
 
@@ -51,9 +44,9 @@ function drawBlocks (ctx, scaledBlocks) {
 function drawGrass (ctx, scaledBlocks) {
   drawingStart(ctx, 'rgba(20, 30, 30, 0.78)');
   scaledBlocks.forEach(({x, y, w}) => {
-    drawFillRect(ctx, x, y, w, 5);
+    ctx.fillRect(x, y, w, 5);
     for (let i = x; i < x + w; i += 6) {
-      drawFillRect(ctx, i, y + 2, 2, 5);
+      ctx.fillRect(i, y + 2, 2, 5);
     }
   });
   drawingEnd(ctx);
@@ -107,7 +100,7 @@ function drawPartsOfBamboo(ctx, x, y, level, width) {
   for (let i = 0; i < leafNum; i ++ ) {
     drawLeaf(ctx, x , y + 2);
   }
-  drawFillRect(ctx, x, y - height, width, height);
+  ctx.fillRect(x, y - height, width, height);
   drawPartsOfBamboo(ctx, x, y - height - 6, level - 1, width);
 }
 
