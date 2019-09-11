@@ -2,164 +2,106 @@ import {UP, DOWN, LEFT, RIGHT, STOP, MAP_SIZE, SCATTER_COLOR, PLAYER_SPRITE, MOV
 import Sprite from "./Sprite";
 import Scatter from "./Scatter";
 import Asset from "./Asset";
+import Entity from "./Entity";
+import {assign} from "./Utils";
 
-class Player {
-  constructor (x, y, map) {
-    this.velocity = 0;
-    this.maxSpeed = 20;
-    this.accel = 1.5;
-    this.map = map;
-    this.width = 32;
-    this.height = 32;
-    this.x = x;
-    this.y = y;
-
+class Player extends Entity{
+  constructor(x, y, map) {
+    super(x, y, 32, 32, 20, 1.5, map);
     this.sprite = new Sprite(PLAYER_SPRITE,3, x, y, 32, 32 * 3);
-    this.scatter = new Scatter(30);
-    this.attackedScatter = new Scatter(10, 0.5, SCATTER_COLOR, 5, 2, 4);
-
-    this._leftTop = {x: this.x, y: this.y};
-    this._rightTop = {x: this.x + this.width, y: this.y};
-    this._leftBottom = {x: this.x, y: this.y + this.height};
-    this.rightBottom = {x: this.x + this.width, y: this.y + this.height};
+    this.dieScatter = new Scatter(30);
+    this.attackedScatter = new Scatter(10, 10, SCATTER_COLOR, 5, 2, 4);
+    this._lT = {x, y};
+    this._rT = {x: this.x + this.width, y};
+    this._lB = {x, y: this.y + this.height};
+    this._rB = {x: this.x + this.width, y: this.y + this.height};
     this.edges = [
-      [this._leftTop, this._rightTop],
-      [this._rightTop, this.rightBottom],
-      [this.rightBottom,this._leftBottom],
-      [this._leftBottom, this._leftTop]
+      [this._lT, this._rT],
+      [this._rT, this._rB],
+      [this._rB, this._lB],
+      [this._lB, this._lT]
     ];
-    this.init(x, y);
+    this.updateEdges();
   }
 
   init (x, y) {
-    this.hp = MAP_SIZE;
-    this.x = x;
-    this.y = y;
-    this.dx = x;
-    this.dy = y;
-    this.isAlive = true;
-    this.moving = STOP;
-    this.updateEdges();
-    this.stop();
-    this.attackedScatter.init();
-    this.scatter.init();
-  }
-
-  updateEdges () {
-   this._leftTop.x = this.x;
-   this._leftTop.y = this.y;
-
-   this._rightTop.x = this.x + this.width;
-   this._rightTop.y = this.y;
-
-   this._leftBottom.x = this.x;
-   this._leftBottom.y = this.y + this.height;
-
-   this.rightBottom.x = this.x + this.width;
-   this.rightBottom.y = this.y + this.height;
-  }
-
-  attacked () {
-    this.hp -= 16;
-    this.attackedScatter.generate(this.x + this.width / 2, this.y + this.height/ 2);
-    if (this.hp < 0) {
-      this.hp = 0;
-    }
-  }
-
-  update(time) {
-    if (!this.isAlive) {
-      this.scatter.generate(this.x, this.y);
-      this.scatter.update();
-      return;
-    }
-    this.attackedScatter.update(time);
-
-    this.updateEdges();
-    const {maxSpeed, accel, dx, dy} = this;
-
-    const incVelocity = accel * time * ((this.moving === UP || this.moving === LEFT) ? -1 : 1);
-    if (this.moving !== STOP) {
-      this.velocity += incVelocity;
-    }
-    if (this.velocity > maxSpeed) {
-      this.velocity = maxSpeed;
-    } else if (this.velocity < -maxSpeed) {
-      this.velocity = -maxSpeed;
-    }
-    const distance = this.velocity * time;
-
-    if (this.moving === UP || this.moving === DOWN) {
-      this.y += distance;
-      if (this.moving === UP) {
-        if (this.y < dy) {
-          this.y = dy;
-          this.stop();
-        }
-      } else if (this.moving === DOWN) {
-        if (this.y > dy) {
-          this.y = dy;
-          this.stop();
-        }
-      }
-    } else if (this.moving === LEFT || this.moving === RIGHT) {
-      this.x += distance;
-      if (this.moving === LEFT) {
-        if (this.x < dx) {
-          this.x = dx;
-          this.stop();
-        }
-      } else if (this.moving === RIGHT) {
-        if (this.x > dx) {
-          this.x = dx;
-          this.stop();
-        }
-      }
-    }
-  }
-
-  stop () {
-    this.velocity = 0;
-    this.moving = STOP;
-    this.dx = this.x;
-    this.dy = this.y;
-
-   // let flipH = false;
-    let flipV = false;
-    let angle = 0;
-    if (this.map.hasBlockAt(this.x + this.width / 2, this.y + this.height + 4)){
-      flipV = false;
-    } else if (this.map.hasBlockAt(this.x + this.width / 2, this.y - 4)) {
-      // top
-      flipV = true;
-    } else if (this.map.hasBlockAt(this.x - 4, this.y + this.height/ 2)) {
-      angle = 90;
-    } else if (this.map.hasBlockAt(this.x + this.width + 4, this.y + this.height/ 2)) {
-      angle = -90;
-    }
-    this.sprite.flipVertical(flipV);
-    this.sprite.rotate(angle);
+    super.init(x, y);
+    assign(this, {hp: MAP_SIZE});
+    (this.edges) && this.updateEdges();
   }
 
   move (moving) {
     if (this.moving === STOP) {
-      Asset.play(MOVE_AUDIO);
       const {x, y} = this.map.getOuterMost(this, moving);
-      this.dx = x;
-      this.dy = y;
-      this.moving = moving;
+      this.moveUntil(moving, x, y);
     }
   }
 
-  render (ctx) {
-    if (!this.isAlive) {
-      this.scatter.render(ctx);
+  stop () {
+    super.stop();
+    const {x, y, width, height, map, sprite} = this;
+    let flipV = false;
+    let angle = 0;
+    if (map.hasBlockAt(x + width / 2, y + height + 4)){
+      flipV = false;
+    } else if (map.hasBlockAt(x + width / 2, y - 4)) {
+      flipV = true;
+    } else if (map.hasBlockAt(x - 4, y + height/ 2)) {
+      angle = 90;
+    } else if (map.hasBlockAt(x + width + 4, y + height/ 2)) {
+      angle = -90;
+    }
+    sprite.flipVertical(flipV);
+    sprite.rotate(angle);
+  }
+
+  attacked() {
+    const {alive, dieScatter, attackedScatter, x, y} = this;
+    if (!alive) {
       return;
     }
-    this.sprite.x = this.x;
-    this.sprite.y = this.y;
-    this.sprite.render(ctx);
-    this.attackedScatter.render(ctx);
+    attackedScatter.generate(x, y);
+    this.hp -= 16;
+    if (this.hp < 0) {
+      this.hp = 0;
+      this.alive = false;
+      dieScatter.generate(x, y);
+    }
+  }
+
+  update (time) {
+    const {alive, dieScatter, attackedScatter, x, y} = this;
+    if (!alive) {
+      dieScatter.update(time);
+      return;
+    }
+    super.update(time);
+    attackedScatter.update(x, y);
+    this.updateEdges();
+  }
+
+  updateEdges () {
+    const {x, y, width, height, _lT, _rT, _lB, _rB} = this;
+    _lT.x = x;
+    _lT.y = y;
+    _rT.x = x + width;
+    _rT.y = y;
+    _lB.x = x;
+    _lB.y = y + height;
+    _rB.x = x + width;
+    _rB.y = y + height;
+  }
+
+  render (ctx) {
+    const {alive, dieScatter, x, y, sprite} = this;
+    if (!alive) {
+      dieScatter.render(ctx);
+      return;
+    }
+    sprite.x = x;
+    sprite.y = y;
+    sprite.render(ctx);
   }
 }
+
 export default Player;
