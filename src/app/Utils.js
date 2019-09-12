@@ -3,8 +3,8 @@ import {CLEAR_HUD, OVER_HUD, READY_HUD} from "./constants";
 const {random, ceil, floor, abs, PI} = Math;
 /**
  * Return random float number in range (min, max).
- * @param min {number} - minimum.
- * @param max {number} - maximum.
+ * @param {number} min
+ * @param {number} max
  * @returns {number} - random float.
  */
 export function randomInRange(min, max) {
@@ -13,8 +13,8 @@ export function randomInRange(min, max) {
 
 /**
  * Return random integer number in range (min, max).
- * @param min {number} - minimum.
- * @param max {number} - maximum.
+ * @param {number} min
+ * @param {number} max
  * @returns {number} - random integer.
  */
 export function randomIntInRange(min, max) {
@@ -25,8 +25,8 @@ export function randomIntInRange(min, max) {
 
 /**
  * Create canvas with size (width, height).
- * @param width {number} - width
- * @param height {number} - height
+ * @param {number} width
+ * @param {number} height
  * @returns {{canvas: *, context: *}}
  */
 export function createCanvas (width, height) {
@@ -41,8 +41,8 @@ export function createCanvas (width, height) {
 
 /**
  * Scale mapData x, y, width, height
- * @param mapData {Array.<{x, y, w, h}>}
- * @param scale {number}
+ * @param {Array.<{x, y, w, h}>} mapData
+ * @param {number} scale
  * @returns {Array.<{x, y, w, h}>}
  */
 export function scaleMapData (mapData, scale) {
@@ -67,7 +67,7 @@ export function forEachAt2D (matrix, [sx, ex], [sy, ey], fn) {
 }
 
 /**
- *
+ * Returns 2 dimension matrix [size x size] which filled with [fill]
  * @param size
  * @param fill
  * @returns {*[][]}
@@ -78,9 +78,9 @@ export function create2D (size, fill) {
 }
 
 /**
- * Convert radian to degree.
- * @param rad {number} - radian.
- * @returns {number} - degree.
+ * Convert radians to degrees.
+ * @param {number} rad
+ * @returns {number}
  */
 export function toDeg (rad) {
   return rad * 180 / PI;
@@ -88,8 +88,8 @@ export function toDeg (rad) {
 
 /**
  * Convert degree to radian
- * @param deg {number} - degree.
- * @returns {number} - radian.
+ * @param {number} deg
+ * @returns {number}
  */
 export function toRad (deg) {
   return deg * PI / 180;
@@ -97,7 +97,7 @@ export function toRad (deg) {
 
 /**
  * Create Image Object with src
- * @param src {string}
+ * @param {string} src
  * @returns {HTMLImageElement}
  */
 export function createImage (src) {
@@ -106,14 +106,34 @@ export function createImage (src) {
   return img;
 }
 
+/**
+ * Check two numbers are almost equal.
+ * @param {number} a
+ * @param {number} b
+ * @returns {boolean}
+ */
 export function almostEqual (a, b) {
   return abs(a - b) <= 2;
 }
 
+/**
+ * Assign source prop to target.
+ * @param {object} target
+ * @param {object} source
+ * @returns {object}
+ */
 export function assign (target, source) {
   return Object.assign(target, source);
 }
 
+/**
+ * Render line.
+ * @param ctx
+ * @param x
+ * @param y
+ * @param tx
+ * @param ty
+ */
 export function renderLine (ctx, x, y, tx, ty) {
   ctx.moveTo(x,y);
   ctx.lineTo(tx, ty);
@@ -125,13 +145,18 @@ const _doms = {
   [CLEAR_HUD]: selectDom(CLEAR_HUD),
 };
 
+/**
+ * Set visibility of HTMLElement whose id property matches the specified string.
+ * @param {string} id
+ * @param {boolean} visible
+ */
 export function showDom (id, visible) {
   _doms[id].style.display = (visible ? 'block' : 'none');
 }
 
 /**
- *
- * @param id
+ * Returns an HTMLElement whose id property matches the specified string.
+ * @param {string} id
  * @returns {HTMLElement}
  */
 export function selectDom (id) {

@@ -53,26 +53,25 @@ function getShorter(origin, end1, end2) {
 
 
 class Vision {
-  constructor (x, y, gap = 2, mapEdges, angleDeg, offsetDeg, radius) {
+  constructor (x, y, mapEdges, angleDeg, radius) {
     this.origin = {x, y};
-    this.gap = gap;
     this.mapEdges = mapEdges;
-    this.offsetDeg = offsetDeg;
     this.angleDeg = angleDeg;
     this.radius = radius;
   }
 
   getIntersectionRange (edges) {
     let firstIntersection = null, lastIntersection = null;
-    this.rayEnds.forEach(rayEnd => {
+    const {rayEnds, origin} = this;
+    rayEnds.forEach(rayEnd => {
       edges.forEach(edge => {
-        let intersection = getIntersection([this.origin, rayEnd], edge);
-        if (intersection) {
-          (lastIntersection) && (lastIntersection = intersection);
-          if (!firstIntersection) {
-            firstIntersection = intersection;
-            lastIntersection = intersection;
-          }
+        let intersection = getIntersection([origin, rayEnd], edge);
+        if (intersection && lastIntersection) {
+          lastIntersection = intersection;
+        }
+        if (intersection && !firstIntersection) {
+          firstIntersection = intersection;
+          lastIntersection = intersection;
         }
       })
     });
@@ -83,34 +82,35 @@ class Vision {
   }
 
   update(x, y, offsetDeg) {
-    this.offsetDeg = offsetDeg;
-    this.origin.x = x;
-    this.origin.y = y;
-    const endDeg = this.offsetDeg + this.angleDeg / 2;
+    const {origin, angleDeg, radius, mapEdges} = this;
+    origin.x = x;
+    origin.y = y;
+    const endDeg = offsetDeg + angleDeg / 2;
     let endIndex = 0;
-    let visionDeg = this.offsetDeg - this.angleDeg / 2;
+    let visionDeg = offsetDeg - angleDeg / 2;
     this.rayEnds = [];
-    this.rayEnds.length = (this.angleDeg / this.gap) | 0;
+    this.rayEnds.length = (angleDeg / 2) | 0;
 
     while (visionDeg < endDeg) {
       const visionRad = toRad(visionDeg);
-      const visionEndX = this.origin.x + Math.cos(visionRad) * this.radius;
-      const visionEndY = this.origin.y + Math.sin(visionRad) * this.radius;
+      const visionEndX = origin.x + Math.cos(visionRad) * radius;
+      const visionEndY = origin.y + Math.sin(visionRad) * radius;
       const visionEnd = {x: visionEndX, y: visionEndY};
-      this.mapEdges.forEach(mapEdge => {
-        const inter = getIntersection([this.origin, visionEnd], [mapEdge.start, mapEdge.end]);
-        this.rayEnds[endIndex] = getShorter(this.origin, this.rayEnds[endIndex], inter || visionEnd);
+      mapEdges.forEach(mapEdge => {
+        const inter = getIntersection([origin, visionEnd], [mapEdge.start, mapEdge.end]);
+        this.rayEnds[endIndex] = getShorter(origin, this.rayEnds[endIndex], inter || visionEnd);
       });
-      visionDeg += this.gap;
+      visionDeg += 2;
       endIndex ++;
     }
   }
 
   render(ctx) {
+    const {origin, rayEnds} = this;
     ctx.fillStyle = VISION_COLOR;
     ctx.beginPath();
-    ctx.moveTo(this.origin.x, this.origin.y);
-    this.rayEnds.forEach(end => end && ctx.lineTo(end.x, end.y));
+    ctx.moveTo(origin.x, origin.y);
+    rayEnds.forEach(end => end && ctx.lineTo(end.x, end.y));
     ctx.closePath();
     ctx.fill();
   }
