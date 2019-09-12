@@ -46,6 +46,10 @@ class Enemy extends Entity {
     this.head.offsetX = 5;
   }
 
+  initialSetup({offset}) {
+    this.offset = offset;
+  }
+
   update(time) {
     if (!this.alive) {
       this.dieScatter.update(time);
@@ -91,7 +95,7 @@ class Enemy extends Entity {
     if (headAngle > 0) {
       headAngle -= 360;
     }
-    if (headAngle < -90) {
+    if (headAngle < -90 && headAngle >= -270) {
       head.angleDeg = headAngle + 180;
       head.isFlipH = false;
       body.isFlipH = false;
