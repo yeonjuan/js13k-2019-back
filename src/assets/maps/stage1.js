@@ -4,7 +4,7 @@ import {LEFT, RIGHT, STOP, ROTATE_TO_RIGHT, ROTATE_TO_LEFT} from "../../app/cons
 const stage = {
   player: {
     x: 0,
-    y: 29,
+    y: 10,
   },
   map: [
     {
@@ -15,35 +15,16 @@ const stage = {
     },
     {
       x: 0,
+      y: 12,
+      w: 10,
+      h: 1,
+    },
+    {
+      x: 0,
       y: 0,
       w: 32,
       h: 1,
     },
-    {
-      x: 16,
-      y: 29,
-      w: 2,
-      h: 3,
-    },
-    {
-      x: 0,
-      y: 23,
-      w: 20,
-      h: 2,
-    },
-    {
-      x: 4,
-      y: 16,
-      w: 28,
-      h: 2,
-    },
-    {
-      type: 'block',
-      x: 18,
-      y: 21,
-      w: 2,
-      h: 2,
-    }
   ],
   enemies: [
     {
@@ -64,7 +45,7 @@ const stage = {
         },
         {
           action: LEFT,
-          until: {x: 22}
+          until: {x: 5}
         },
         {
           action: STOP,
@@ -76,36 +57,6 @@ const stage = {
         }
       ]
     },
-    {
-      x: 5,
-      y: 21,
-      cmd: [
-        {
-          action: LEFT,
-          until: {x: 3}
-        },
-        {
-          action: STOP,
-          until: {time: 100}
-        },
-        {
-          action: ROTATE_TO_RIGHT,
-          until: {offset: 0}
-        },
-        {
-          action: RIGHT,
-          until: {x: 10}
-        },
-        {
-          action: STOP,
-          until: {time: 100}
-        },
-        {
-          action: ROTATE_TO_LEFT,
-          until: {offset: -180}
-        }
-      ]
-    }
   ]
 };
 

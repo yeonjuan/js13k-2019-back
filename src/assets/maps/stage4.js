@@ -14,32 +14,50 @@ const stage = {
       h: 1,
     },
     {
-      x: 8,
-      y: 22,
-      w: 16,
-      h: 1,
-    },
-    {
-      x: 15,
-      y: 1,
-      w: 2,
-      h: 4,
-    },
-    {
       x: 0,
       y: 0,
       w: 32,
       h: 1,
     },
+    {
+      x: 0,
+      y: 22,
+      w: 20,
+      h: 2,
+    },
+    {
+      x: 16,
+      y: 14,
+      w: 16,
+      h: 2,
+    },
+    {
+      x: 14,
+      y: 14,
+      w: 2,
+      h: 5,
+    },
+    {
+      x: 0,
+      y: 10,
+      w: 2,
+      h: 2,
+    },
+    {
+      x: 22,
+      y: 4,
+      w: 2,
+      h: 6,
+    }
   ],
   enemies: [
     {
-      x: 10,
+      x: 4,
       y: 20,
       cmd: [
         {
           action: RIGHT,
-          until: {x: 20}
+          until: {x: 16}
         },
         {
           action: STOP,
@@ -51,7 +69,7 @@ const stage = {
         },
         {
           action: LEFT,
-          until: {x:10}
+          until: {x: 4}
         },
         {
           action: STOP,
@@ -63,6 +81,28 @@ const stage = {
         }
       ]
     },
+    {
+      x: 0,
+      y: 8,
+      cmd: [
+        {
+          action: ROTATE_TO_RIGHT,
+          until: {offset: -40}
+        },
+        {
+          action: STOP,
+          until: {time: 20}
+        },
+        {
+          action: ROTATE_TO_RIGHT,
+          until: {offset: 50}
+        },
+        {
+          action: STOP,
+          until: {time: 20}
+        },
+      ]
+    }
   ]
 };
 
