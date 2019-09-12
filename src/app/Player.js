@@ -36,6 +36,7 @@ class Player extends Entity{
 
   init (x, y) {
     super.init(x, y);
+    (this.sprite) && (this.sprite.isFlipV = false);
     assign(this, {hp: MAP_SIZE});
     (this.edges) && this.updateEdges();
   }
@@ -76,7 +77,7 @@ class Player extends Entity{
     this.hp -= 16;
     Asset.play(SHOT_AUDIO);
 
-    if (this.hp < 0) {
+    if (this.hp <= 0) {
       Asset.play(HIT_AUDIO);
       this.hp = 0;
       this.alive = false;
