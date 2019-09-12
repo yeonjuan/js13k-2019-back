@@ -20,13 +20,13 @@ const toBlockIdx = (num) => (num / BLOCK_SIZE) | 0;
 const toEdge = ({x, y, w, h}) => {
   const edges = [];
   const vertices = [[x, y], [x + w, y], [x + w, y + h], [x, y + h]];
-  for (let si = 0, len = vertices.length; si < len; si ++) {
-    const ei = (si + 1) % len;
+  vertices.forEach((vertex, si) => {
+    const ei = (si + 1) % vertices.length;
     edges.push({
       start: {x: vertices[si][0], y: vertices[si][1]},
       end: {x: vertices[ei][0], y: vertices[ei][1]}
     });
-  }
+  });
   return edges;
 };
 
