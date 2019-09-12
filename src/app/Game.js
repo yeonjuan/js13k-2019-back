@@ -5,7 +5,7 @@ import Enemy from "./Enemy";
 import input from './Input';
 import Asset from './Asset';
 import {createCanvas, selectDom, showDom} from "./Utils";
-
+import {drawFont} from "./Font";
 import {
   UP,
   RIGHT,
@@ -40,7 +40,7 @@ class Game {
     this.nextms = 0;
    // this.input = Input;
     this.state = GAME_READY;
-    this.stageNum = 5;
+    this.stageNum =1;
   }
 
   init () {
@@ -116,6 +116,8 @@ class Game {
     ctx.clearRect(0,0, MAP_SIZE, MAP_SIZE);
     map.renderReady(ctx);
     player.render(ctx);
+    drawFont(ctx, 'back attacker', 8, 40, 200);
+    drawFont(ctx, 'press Enter to start', 2, 120, 250);
   }
 
   renderPlaying(nms) {
