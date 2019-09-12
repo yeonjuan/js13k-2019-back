@@ -16,7 +16,7 @@ import {
 const PADDING = 2;
 class Player extends Entity{
   constructor(x, y, map) {
-    super(x, y, 32, 32, 10, 1.5, map);
+    super(x, y, 32, 32, 8, 1.5, map);
     this.sprite = new Sprite(PLAYER_SPRITE,1, x, y, 32, 32);
     this.dieScatter = new Scatter(30);
     this.attackedScatter = new Scatter(10, 10, SCATTER_COLOR, 5, 2, 4);
@@ -77,7 +77,7 @@ class Player extends Entity{
     }
     attackedScatter.generate(x, y);
 
-    this.hp -= 16;
+    this.hp -= 20;
     Asset.play(SHOT_AUDIO);
 
     if (this.hp <= 0) {
