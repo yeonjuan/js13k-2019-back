@@ -1,8 +1,9 @@
+import Sprite from "./Sprite";
+import Scatter from "./Scatter";
+import Asset from "./Asset";
+import Entity from "./Entity";
+import {assign} from "./Utils";
 import {
-  UP,
-  DOWN,
-  LEFT,
-  RIGHT,
   STOP,
   MAP_SIZE,
   SCATTER_COLOR,
@@ -11,12 +12,8 @@ import {
   HIT_AUDIO,
   SHOT_AUDIO, HP_COLOR
 } from './constants';
-import Sprite from "./Sprite";
-import Scatter from "./Scatter";
-import Asset from "./Asset";
-import Entity from "./Entity";
-import {assign} from "./Utils";
 
+const PADDING = 2;
 class Player extends Entity{
   constructor(x, y, map) {
     super(x, y, 32, 32, 10, 1.5, map);
@@ -24,10 +21,10 @@ class Player extends Entity{
     this.dieScatter = new Scatter(30);
     this.attackedScatter = new Scatter(10, 10, SCATTER_COLOR, 5, 2, 4);
     this.hp = MAP_SIZE;
-    this._lT = {x, y};
-    this._rT = {x: this.x + this.width, y};
-    this._lB = {x, y: this.y + this.height};
-    this._rB = {x: this.x + this.width, y: this.y + this.height};
+    this._lT = {x: x + PADDING, y: y + PADDING};
+    this._rT = {x: x + this.width - PADDING, y: y + PADDING};
+    this._lB = {x: x + PADDING, y: y + this.height - PADDING};
+    this._rB = {x: x + this.width - PADDING, y: y + this.height - PADDING};
     this.edges = [
       [this._lT, this._rT],
       [this._rT, this._rB],
@@ -100,14 +97,14 @@ class Player extends Entity{
 
   updateEdges () {
     const {x, y, width, height, _lT, _rT, _lB, _rB} = this;
-    _lT.x = x;
-    _lT.y = y;
-    _rT.x = x + width;
-    _rT.y = y;
-    _lB.x = x;
-    _lB.y = y + height;
-    _rB.x = x + width;
-    _rB.y = y + height;
+    _lT.x = x + PADDING;
+    _lT.y = y + PADDING;
+    _rT.x = x + width - PADDING;
+    _rT.y = y + PADDING;
+    _lB.x = x + PADDING;
+    _lB.y = y + height - PADDING;
+    _rB.x = x + width - PADDING;
+    _rB.y = y + height - PADDING;
   }
 
   render (ctx) {
