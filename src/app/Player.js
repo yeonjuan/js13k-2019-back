@@ -36,7 +36,10 @@ class Player extends Entity{
 
   init (x, y) {
     super.init(x, y);
-    (this.sprite) && (this.sprite.isFlipV = false);
+    if (this.sprite) {
+      this.sprite.angleDeg = 0;
+      this.sprite.isFlipV = false;
+    }
     assign(this, {hp: MAP_SIZE});
     (this.edges) && this.updateEdges();
   }
