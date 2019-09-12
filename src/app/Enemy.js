@@ -57,24 +57,24 @@ class Enemy extends Entity {
     }
 
     super.update(time);
-    const {player, width, height, x, y, vision, dieScatter, offset} = this;
+    const {player, width, height, x, y, vision, dieScatter} = this;
     if (x < player.x + player.width && x + width > player.x && y < player.y + player.height && y + height > player.y) {
       Asset.play(HIT_AUDIO);
       this.alive = false;
       dieScatter.generate(x, y);
     }
 
-    vision.update(x + width / 2 + 2, y, offset);
-    this.updateSprite(time);
 
+    this.updateSprite(time);
+    vision.update(x + width / 2, y, this.offset);
     const intersectionRange = vision.getIntersectionRange(player.edges);
     const isAttacking = intersectionRange && player.alive;
     if (isAttacking) {
       const targetX = (intersectionRange[0].x + intersectionRange[1].x) / 2;
       const targetY = (intersectionRange[0].y + intersectionRange[1].y) / 2;
-      const rad = toRad(offset);
+      const rad = toRad(this.offset);
       const diffY = player.y + player.height / 2 - y;
-      const diffX = player.x + player.width / 2 - x;
+      const diffX = player.x + player.width / 2 - x - this.width / 2;
       this.offset = toDeg(Math.atan2(diffY, diffX));
       this.ox = x  + width / 2 + Math.cos(rad) * 21;
       this.oy =  y + 7 + Math.sin(rad) * 21;
