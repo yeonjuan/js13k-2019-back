@@ -47,7 +47,7 @@ const stage = {
       x: 22,
       y: 4,
       w: 2,
-      h: 6,
+      h: 8,
     }
   ],
   enemies: [

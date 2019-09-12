@@ -3,6 +3,7 @@ import stage2 from './stage2';
 import stage3 from './stage3';
 import stage4 from './stage4';
 import stage5 from './stage5';
+import stage6 from './stage6';
 
 function getStage (stageNum) {
   switch (stageNum) {
@@ -16,6 +17,8 @@ function getStage (stageNum) {
       return stage4;
     case 5:
       return stage5;
+    case 6:
+      return stage6;
     default:
       // ...
   }
