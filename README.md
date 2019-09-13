@@ -1,8 +1,7 @@
 # Back Attacker
-My game for the js13kgames competition.
+![screenshot](./big-400.png)  
 
-![screenshot](./big-400.png)
-
+My game for the js13kgames competition.  
 
 ## Story
 This is the Ninja Forest.  
