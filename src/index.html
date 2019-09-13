@@ -1,71 +1,8 @@
 <!DOCTYPE html>
 <html>
-  <head>
-      <style>
-
-          body {
-              background-color: black;
-              margin: 0;
-          }
-          body {
-              display: flex;
-              width: 100vw;
-              height: 100vh;
-              overflow: hidden;
-              align-items: center;
-              justify-content: center;
-              color: #eee;
-              background: #000;
-              font-family: sans-serif;
-          }
-          body.loading {
-              display: flex;
-          }
-          #canvas {
-              background: #333333;
-          }
-          #ready {
-              font-size: 30px;
-              position: absolute;
-              color: white;
-              text-align: center;
-          }
-          #over {
-              font-size: 30px;
-              position: absolute;
-              color: white;
-              text-align: center;
-          }
-          #clear {
-              font-size: 30px;
-              position: absolute;
-              color: white;
-              text-align: center;
-          }
-          p {
-              font-size: 25px;
-              font-weight: lighter;
-          }
-
-      </style>
+  <head><style>body{background-color:#000;margin:0}body{display:flex;width:100vw;height:100vh;overflow:hidden;align-items:center;justify-content:center;color:#eee;background:#000;font-family:sans-serif}body.loading{display:flex}#canvas{width:600px;height:600px;background:#333}</style>
   </head>
   <body class="loading">
     <canvas id="canvas" width="600" height="600"></canvas>
-    <div id="ready">
-        <h1>Back Attacker</h1>
-        <p>This is the Ninja Forest<br>
-            Invaders have entered.<br>
-            Damn!!, they have brought a gun cowardly<br>
-            Get rid of them in the dark.
-        </p>
-    </div>
-    <div id="over" style="display: none">
-        <h1>Game Over...</h1>
-        <p>press Enter to restart...</p>
-    </div>
-    <div id="clear" style="display: none">
-        <h1>Stage Clear !!</h1>
-        <p>press Enter to next</p>
-    </div>
   </body>
 </html>

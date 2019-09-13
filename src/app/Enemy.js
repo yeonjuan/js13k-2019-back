@@ -1,6 +1,4 @@
 import {
-  UP,
-  DOWN,
   LEFT,
   RIGHT,
   STOP,
@@ -9,7 +7,7 @@ import {
   ENEMY_BODY_SPRITE,
   ENEMY_HEAD_SPRITE,
   HIT_AUDIO,
-  SHOT_AUDIO, BULLET_COLOR
+  BULLET_COLOR
 } from './constants';
 import {toDeg, toRad, almostEqual, renderLine, randomInRange} from "./Utils";
 import Vision from './Vision';
@@ -19,6 +17,12 @@ import Entity from "./Entity";
 import {assign} from "./Utils";
 import Asset from "./Asset";
 
+/**
+ * Render shooting effect
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {number} x
+ * @param {number} y
+ */
 function renderEndPoint (ctx, x, y) {
   for (let i = 0; i < 5; i++) {
     renderLine(ctx, x, y, x + randomInRange(-10, 10), y +  randomInRange(-10, 10));
@@ -58,15 +62,17 @@ class Enemy extends Entity {
 
     super.update(time);
     const {player, width, height, x, y, vision, dieScatter} = this;
+
     if (x < player.x + player.width && x + width > player.x && y < player.y + player.height && y + height > player.y) {
+      // Collide with player, die.
       Asset.play(HIT_AUDIO);
       this.alive = false;
       dieScatter.generate(x, y);
     }
 
-
     this.updateSprite(time);
     vision.update(x + width / 2, y, this.offset);
+
     const intersectionRange = vision.getIntersectionRange(player.edges);
     const isAttacking = intersectionRange && player.alive;
     if (isAttacking) {

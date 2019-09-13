@@ -1,3 +1,8 @@
+/**
+ * Refer to js13k-2018-raven.
+ * @see https://github.com/PaulBGD/PixelFont
+ */
+
 const letters = {
     'A': [
       [, 1],
@@ -290,5 +295,40 @@ export function drawFont(context, string, size, px, py) {
     }
     currX += size + addX;
   }
-
 }
+
+class Font {
+  constructor (text, x, y, size) {
+    this.text = text;
+    this.progress = 0;
+    this.time = 1;
+    this.x = x;
+    this.y = y;
+    this.size = size;
+    this.fullFill = false;
+  }
+
+  init () {
+    this.fullFill = false;
+    this.progress = 0;
+    this.time = 2;
+  }
+
+  update(time) {
+    this.time -= time;
+    if (this.time < 0) {
+      this.progress ++;
+      if (this.progress > this.text.length) {
+        this.progress = this.text.length;
+        this.fullFill = true;
+      }
+      this.time = 2;
+    }
+  }
+
+  render(ctx) {
+    drawFont(ctx, this.text.substr(0, this.progress), this.size, this.x, this.y);
+  }
+}
+
+export default Font;

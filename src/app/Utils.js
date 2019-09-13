@@ -1,5 +1,3 @@
-import {CLEAR_HUD, OVER_HUD, READY_HUD} from "./constants";
-
 const {random, ceil, floor, abs, PI} = Math;
 /**
  * Return random float number in range (min, max).
@@ -137,21 +135,6 @@ export function assign (target, source) {
 export function renderLine (ctx, x, y, tx, ty) {
   ctx.moveTo(x,y);
   ctx.lineTo(tx, ty);
-}
-
-const _doms = {
-  [READY_HUD]: selectDom(READY_HUD),
-  [OVER_HUD]: selectDom(OVER_HUD),
-  [CLEAR_HUD]: selectDom(CLEAR_HUD),
-};
-
-/**
- * Set visibility of HTMLElement whose id property matches the specified string.
- * @param {string} id
- * @param {boolean} visible
- */
-export function showDom (id, visible) {
-  _doms[id].style.display = (visible ? 'block' : 'none');
 }
 
 /**

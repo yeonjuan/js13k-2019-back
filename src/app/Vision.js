@@ -1,3 +1,8 @@
+/**
+ * Refer to js13k-2018-raven.
+ * @see https://github.com/elliot-nelson/js13k-2018-raven/blob/master/src/js/Util.js
+ */
+
 import {VISION_COLOR} from "./constants";
 import {toRad} from "./Utils";
 

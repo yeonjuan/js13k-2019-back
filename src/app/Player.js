@@ -36,12 +36,13 @@ class Player extends Entity{
 
   init (x, y) {
     super.init(x, y);
-    if (this.sprite) {
-      this.sprite.angleDeg = 0;
-      this.sprite.isFlipV = false;
+    const {sprite, edges} = this;
+    if (sprite) {
+      sprite.angleDeg = 0;
+      sprite.isFlipV = false;
     }
     assign(this, {hp: MAP_SIZE});
-    (this.edges) && this.updateEdges();
+    (edges) && this.updateEdges();
   }
 
   move (moving) {
@@ -113,10 +114,20 @@ class Player extends Entity{
 
   render (ctx) {
     this.renderHp(ctx);
-    const {alive, dieScatter, x, y, sprite} = this;
+    const {alive, dieScatter, x, y, sprite, moving, dx, dy, width, height} = this;
     if (!alive) {
       dieScatter.render(ctx);
       return;
+    }
+    if (moving !== STOP) {
+      ctx.fillStyle = 'black';
+      let w = (x - dx + 2) % 200;
+      let h = (y - dy + 2) % 200;
+      let sx = x + width / 2;
+      let sy = y + height / 2;
+      ctx.fillRect(sx, sy, w, h);
+      ctx.fillRect(sx + 5, sy + 5, w, h);
+      ctx.fillRect(sx + -5, sy + -5, w, h);
     }
     sprite.pos(x, y);
     sprite.render(ctx);

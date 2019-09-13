@@ -10,7 +10,7 @@ const KEYMAP = {
 };
 
 let _onKeydown = {};
-
+let _setuped = false;
 document.addEventListener('keydown', e => {
   e.preventDefault();
   const key = KEYMAP[e.keyCode];
@@ -18,6 +18,9 @@ document.addEventListener('keydown', e => {
 });
 
 function input(keyInputs) {
+  if (_setuped) {
+    return;
+  }
   assign(_onKeydown, keyInputs);
 }
 

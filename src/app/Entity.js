@@ -4,11 +4,11 @@ import {assign} from "./Utils";
 class Entity {
   constructor (x, y, width, height, maxSpeed, accel, map) {
     assign(this, {
-      width,
-      height,
-      maxSpeed,
-      accel,
-      map,
+      width, // entity width.
+      height, // entity height
+      maxSpeed, // maximum speed
+      accel, // acceleration
+      map, // map
     });
     this.init(x, y);
   }

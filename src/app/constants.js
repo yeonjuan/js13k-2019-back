@@ -20,6 +20,7 @@ export const GAME_READY = 0;
 export const GAME_PLAYING = 1;
 export const GAME_STAGE_CLEAR = 2;
 export const GAME_OVER = 3;
+export const GAME_ALL_CLEAR = 4;
 
 // colors
 export const VISION_COLOR = 'rgba(255, 255, 255,0.2)';
@@ -36,7 +37,11 @@ export const HIT_AUDIO = 'hit';
 export const MOVE_AUDIO = 'move';
 export const SHOT_AUDIO = 'shot';
 
-// dom IDs
-export const OVER_HUD = 'over';
-export const CLEAR_HUD = 'clear';
-export const READY_HUD = 'ready';
+// game
+export const MAX_STAGE_NUM = 8;
+export const TEXT_START_X = 40;
+export const TEXT_START_Y = 180;
+export const LINE_HEIGHT = 30;
+export const FONT_SIZE_SMALL = 3;
+export const FONT_SIZE_BIG = 4;
+export const PRESS_ENTER = 'press enter';
