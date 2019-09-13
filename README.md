@@ -2,12 +2,15 @@
 ![screenshot](./big-400.png)  
 
 My game for the js13kgames competition.  
-
+You can play at (https://yeonjuan.github.io/js13k-2019-back/)
 ## Story
 This is the Ninja Forest.  
 Invaders have entered!!.  
 They have brought a gun cowardly.  
 Get rid of them in the dark.  
+
+## Category
+ * Desktop
 
 ## Scripts
 * npm install
