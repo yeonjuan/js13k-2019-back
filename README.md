@@ -2,7 +2,7 @@
 ![screenshot](./big-400.png)  
 
 My game for the js13kgames competition.  
-You can play at (https://yeonjuan.github.io/js13k-2019-back/)
+You can play the game at [js13kgames](https://js13kgames.com/entries/back-attacker)
 ## Story
 This is the Ninja Forest.  
 Invaders have entered!!.  
