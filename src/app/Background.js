@@ -1,4 +1,4 @@
-import {MAP_SIZE, BLOCK_SIZE, BLOCK_COLOR} from "./constants";
+import {MAP_SIZE, BLOCK_SIZE, BLOCK_COLOR, GRASS_COLOR} from "./constants";
 import {randomInRange, randomIntInRange, scaleMapData, createCanvas, createImage} from "./Utils";
 
 // Virtual canvas for drawing background
@@ -42,7 +42,7 @@ function drawBlocks (ctx, scaledBlocks) {
  * @param scaledBlocks {Array.<{x, y, w, h}>}
  */
 function drawGrass (ctx, scaledBlocks) {
-  drawingStart(ctx, 'rgba(20, 30, 30, 0.78)');
+  drawingStart(ctx, GRASS_COLOR);
   scaledBlocks.forEach(({x, y, w}) => {
     ctx.fillRect(x, y, w, 5);
     for (let i = x; i < x + w; i += 6) {

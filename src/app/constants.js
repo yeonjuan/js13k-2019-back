@@ -28,6 +28,7 @@ export const BULLET_COLOR = 'yellow';
 export const HP_COLOR = 'rgb(139,0,0)';
 export const BLOCK_COLOR = 'black';
 export const SCATTER_COLOR = 'black';
+export const GRASS_COLOR = 'rgba(20, 30, 30, 0.78)';
 
 // asset IDs
 export const ENEMY_BODY_SPRITE = 'ebody';
